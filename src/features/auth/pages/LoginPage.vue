@@ -1,47 +1,3 @@
-<script setup>
-import { useField, useForm } from 'vee-validate';
-import * as yup from 'yup';
-import { loginService } from '../services/loginService';
-import { ref } from 'vue';
-import router from '@/router';
-import BackgroundAnimation from '@/components/BackgroundAnimation.vue';
-
-const loading = ref(false);
-
-// Form validation schema
-const schema = yup.object({
-  token: yup
-    .string()
-    .required('Token is required')
-    .min(10, 'Please enter a valid token'),
-});
-
-const { handleSubmit, setFieldError } = useForm({
-  validationSchema: schema,
-});
-
-const { value: tokenInput, errorMessage } = useField('token');
-
-const onSubmit = handleSubmit(async (values) => {
-  localStorage.setItem('token', values.token);
-  try {
-    loading.value = true;
-    const response = await loginService.checkToken();
-    console.log('Response:', response);
-    router.push('/branches');
-  } catch (error) {
-    // Check status because it HEAD request, so it won't have a message in response
-    if (error?.response?.status === 401) {
-      setFieldError('token', 'Unauthorized / Wrong token');
-    } else {
-      setFieldError('token', 'Something went wrong');
-    }
-  } finally {
-    loading.value = false;
-  }
-});
-</script>
-
 <template>
   <BackgroundAnimation>
     <!-- Login card -->
@@ -89,3 +45,47 @@ const onSubmit = handleSubmit(async (values) => {
     </div>
   </BackgroundAnimation>
 </template>
+
+<script setup>
+import { useField, useForm } from 'vee-validate';
+import * as yup from 'yup';
+import { loginService } from '../services/loginService';
+import { ref } from 'vue';
+import router from '@/router';
+import BackgroundAnimation from '../components/BackgroundAnimation.vue';
+
+const loading = ref(false);
+
+// Form validation schema
+const schema = yup.object({
+  token: yup
+    .string()
+    .required('Token is required')
+    .min(10, 'Please enter a valid token'),
+});
+
+const { handleSubmit, setFieldError } = useForm({
+  validationSchema: schema,
+});
+
+const { value: tokenInput, errorMessage } = useField('token');
+
+// Submit form
+const onSubmit = handleSubmit(async (values) => {
+  localStorage.setItem('token', values.token);
+  try {
+    loading.value = true;
+    const response = await loginService.checkToken();
+    router.push('/branches');
+  } catch (error) {
+    // Check status because it HEAD request, so it won't have a message in response
+    if (error?.response?.status === 401) {
+      setFieldError('token', 'Unauthorized / Wrong token');
+    } else {
+      setFieldError('token', 'Something went wrong');
+    }
+  } finally {
+    loading.value = false;
+  }
+});
+</script>
