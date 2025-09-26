@@ -37,6 +37,7 @@ router.beforeEach((to, from, next) => {
   }
 });
 
+// Set the document title
 router.afterEach((to) => {
   const defaultTitle = 'Restaurant Reservation System';
   document.title = to.meta.title || defaultTitle;
