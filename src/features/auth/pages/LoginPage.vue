@@ -1,24 +1,40 @@
 <script setup>
 import { useField, useForm } from 'vee-validate';
 import * as yup from 'yup';
+import { loginService } from '../services/loginService';
+import { ref } from 'vue';
+import router from '@/router';
+
+const loading = ref(false);
 
 // Form validation schema
 const schema = yup.object({
   token: yup
     .string()
     .required('Token is required')
-    .min(1, 'Please enter your token'),
+    .min(10, 'Please enter a valid token'),
 });
 
-const { handleSubmit, errors } = useForm({
+const { handleSubmit, setFieldError } = useForm({
   validationSchema: schema,
 });
 
-const { value: token, errorMessage: tokenError } = useField('token');
+const { value: tokenInput, errorMessage } = useField('token');
 
-const onSubmit = handleSubmit((values) => {
-  console.log('Form submitted:', values);
-  // Handle form submission here
+const onSubmit = handleSubmit(async (values) => {
+  localStorage.setItem('token', values.token);
+  try {
+    loading.value = true;
+    const response = await loginService.getAll();
+    console.log('Response:', response);
+    router.push('/branches');
+  } catch (error) {
+    const msg =
+      `${error?.response?.data?.message} Wrong token` || 'Something went wrong';
+    setFieldError('token', `${msg}`);
+  } finally {
+    loading.value = false;
+  }
 });
 </script>
 
@@ -55,24 +71,32 @@ const onSubmit = handleSubmit((values) => {
       <form @submit.prevent="onSubmit" class="space-y-6">
         <div>
           <div class="relative">
+            <label
+              for="token"
+              class="block text-base font-medium text-gray-700 mb-1"
+            >
+              Token: <span class="text-red-500">*</span>
+            </label>
             <input
-              v-model="token"
+              v-model="tokenInput"
               type="text"
               placeholder="Please enter your token"
+              id="token"
               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all duration-200 text-gray-700"
-              :class="{ 'border-red-500 focus:ring-red-500': tokenError }"
+              :class="{ 'border-red-500 focus:ring-red-500': errorMessage }"
             />
           </div>
-          <p v-if="tokenError" class="mt-2 text-sm text-red-600">
-            {{ tokenError }}
+          <p v-if="errorMessage" class="mt-2 text-sm text-red-600">
+            {{ errorMessage }}
           </p>
         </div>
 
         <button
           type="submit"
-          class="w-full bg-primary cursor-pointer text-white py-3 px-4 rounded-lg font-medium hover:bg-primary/90 transition-all duration-200 shadow-lg"
+          class="w-full bg-primary cursor-pointer text-white py-3 px-4 rounded-lg font-medium hover:bg-primary/90 transition-all duration-200 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+          :disabled="loading"
         >
-          Login
+          {{ loading ? 'Loading...' : 'Login' }}
         </button>
       </form>
     </div>
