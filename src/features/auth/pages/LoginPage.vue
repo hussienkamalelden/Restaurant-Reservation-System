@@ -4,6 +4,7 @@ import * as yup from 'yup';
 import { loginService } from '../services/loginService';
 import { ref } from 'vue';
 import router from '@/router';
+import BackgroundAnimation from '@/components/BackgroundAnimation.vue';
 
 const loading = ref(false);
 
@@ -25,13 +26,16 @@ const onSubmit = handleSubmit(async (values) => {
   localStorage.setItem('token', values.token);
   try {
     loading.value = true;
-    const response = await loginService.getAll();
+    const response = await loginService.checkToken();
     console.log('Response:', response);
     router.push('/branches');
   } catch (error) {
-    const msg =
-      `${error?.response?.data?.message} Wrong token` || 'Something went wrong';
-    setFieldError('token', `${msg}`);
+    // Check status because it HEAD request, so it won't have a message in response
+    if (error?.response?.status === 401) {
+      setFieldError('token', 'Unauthorized / Wrong token');
+    } else {
+      setFieldError('token', 'Something went wrong');
+    }
   } finally {
     loading.value = false;
   }
@@ -39,24 +43,7 @@ const onSubmit = handleSubmit(async (values) => {
 </script>
 
 <template>
-  <div
-    class="min-h-screen bg-primary flex items-center justify-center p-4 relative overflow-hidden"
-  >
-    <!-- Animated background -->
-    <div class="absolute inset-0 overflow-hidden">
-      <div
-        class="absolute -top-4 -left-4 w-72 h-72 bg-white opacity-10 rounded-full animate-pulse"
-      ></div>
-      <div
-        class="absolute top-1/2 -right-8 w-96 h-96 bg-white opacity-5 rounded-full animate-bounce"
-        style="animation-duration: 3s"
-      ></div>
-      <div
-        class="absolute bottom-8 left-1/3 w-48 h-48 bg-white opacity-10 rounded-full animate-pulse"
-        style="animation-delay: 1s"
-      ></div>
-    </div>
-
+  <BackgroundAnimation>
     <!-- Login card -->
     <div
       class="bg-white rounded-2xl shadow-2xl p-8 w-full max-w-md relative z-10 backdrop-blur-sm bg-opacity-95"
@@ -100,5 +87,5 @@ const onSubmit = handleSubmit(async (values) => {
         </button>
       </form>
     </div>
-  </div>
+  </BackgroundAnimation>
 </template>
