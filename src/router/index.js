@@ -6,13 +6,13 @@ const routes = [
     path: '/login',
     name: 'Login',
     component: () => import('@/features/auth/pages/LoginPage.vue'),
-    meta: { requiresAuth: false },
+    meta: { title: 'Login', requiresAuth: false },
   },
   {
     path: '/branches',
     name: 'Branches',
     component: () => import('@/features/branches/pages/BranchesPage.vue'),
-    meta: { requiresAuth: true },
+    meta: { title: 'Branches', requiresAuth: true },
   },
   {
     path: '/:catchAll(.*)',
@@ -35,6 +35,11 @@ router.beforeEach((to, from, next) => {
   } else {
     next();
   }
+});
+
+router.afterEach((to) => {
+  const defaultTitle = 'Restaurant Reservation System';
+  document.title = to.meta.title || defaultTitle;
 });
 
 export default router;

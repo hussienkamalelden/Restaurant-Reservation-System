@@ -1,9 +1,11 @@
-<script setup></script>
+<script setup>
+import DefaultLayout from '@/layouts/DefaultLayout.vue';
+</script>
 
 <template>
-  <div>
+  <DefaultLayout>
     <h1>Branches</h1>
-  </div>
+  </DefaultLayout>
 </template>
 
 <style scoped></style>
