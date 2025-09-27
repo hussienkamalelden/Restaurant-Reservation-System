@@ -9,7 +9,7 @@
       leave-to-class="opacity-0"
     >
       <div
-        v-show="isVisible && message"
+        v-if="isVisible && message"
         :class="toastClasses"
         class="fixed top-4 left-1/2 transform -translate-x-1/2 z-[60] px-4 py-2 rounded-lg shadow-lg max-w-sm text-center"
       >
