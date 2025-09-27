@@ -6,6 +6,7 @@ export const useBranchStore = defineStore('branches', () => {
   const branches = ref([]);
   const loading = ref(false);
   const error = ref(null);
+  const selectedBranches = ref([]);
 
   const getBranches = async () => {
     try {
@@ -23,6 +24,7 @@ export const useBranchStore = defineStore('branches', () => {
     branches,
     loading,
     error,
+    selectedBranches,
     getBranches,
   };
 });

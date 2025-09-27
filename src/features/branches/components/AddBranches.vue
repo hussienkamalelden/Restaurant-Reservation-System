@@ -15,8 +15,8 @@
         </label>
         <select
           id="branch-select"
-          v-model="selectedBranch"
           class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
+          @change="addBranch($event.target.value)"
         >
           <option disabled selected value="0">Choose a branch...</option>
           <option
@@ -25,12 +25,21 @@
             )"
             :key="branch.id"
             :value="branch.id"
+            :name="branch.name"
           >
             {{ branch.name }}
           </option>
         </select>
+        <div>
+          <Tag
+            v-for="branch in selectedBranches"
+            :key="branch.id"
+            :name="branch.name"
+            :id="branch.id"
+          />
+        </div>
         <span
-          v-if="selectedBranch === 0 && saveClicked"
+          v-if="selectedBranches.length === 0 && saveClicked"
           class="text-red-500 text-sm"
         >
           Please select a branch
@@ -45,9 +54,9 @@ import CustomDialog from '@/components/CustomDialog.vue';
 import { useBranchStore } from '../store/useBranchStore';
 import { storeToRefs } from 'pinia';
 import { ref } from 'vue';
+import Tag from '@/components/Tag.vue';
 const branchStore = useBranchStore();
-const { branches } = storeToRefs(branchStore);
-const selectedBranch = ref(0);
+const { selectedBranches, branches } = storeToRefs(branchStore);
 const saveClicked = ref(false);
 
 defineProps({
@@ -61,17 +70,26 @@ const emit = defineEmits(['close', 'save']);
 
 const handleSave = () => {
   saveClicked.value = true;
-  if (selectedBranch.value) {
-    console.log('Save clicked - Selected branch:', selectedBranch.value);
-    // Add your save logic here
-    // You can emit the selected branch data to parent component
-    // $emit('save', { branchId: selectedBranch.value })
+  if (selectedBranches.value) {
+    emit('close');
   }
 };
 
 const closeDialog = () => {
   saveClicked.value = false;
-  selectedBranch.value = 0;
+  selectedBranches.value = null;
   emit('close');
+};
+
+const addBranch = (item) => {
+  console.log(item);
+
+  const index = selectedBranches.value.findIndex(
+    (branch) => branch.id === item.id
+  );
+
+  if (index === -1) {
+    selectedBranches.value.push(item);
+  }
 };
 </script>
