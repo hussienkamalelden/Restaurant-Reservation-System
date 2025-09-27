@@ -1,5 +1,5 @@
 <template>
-  <nav class="bg-primary shadow-xl fixed top-0 left-0 right-0 z-50">
+  <nav class="bg-primary shadow-xl fixed top-0 left-0 right-0 z-[2]">
     <div class="container">
       <div class="flex justify-between items-center py-4">
         <router-link to="/branches">
