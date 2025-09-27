@@ -15,6 +15,7 @@
         </label>
         <select
           id="branch-select"
+          ref="branchSelect"
           class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary"
           @change="
             addBranch(
@@ -35,6 +36,13 @@
             {{ branch.name }}
           </option>
         </select>
+        <!-- Error Message -->
+        <span
+          v-if="selectedBranches.length === 0 && saveClicked"
+          class="text-red-500 text-sm"
+        >
+          Please select a branch
+        </span>
         <!-- Selected Branches -->
         <div class="flex flex-wrap gap-2 mt-2">
           <Tag
@@ -44,12 +52,6 @@
             :id="branch.id"
           />
         </div>
-        <span
-          v-if="selectedBranches.length === 0 && saveClicked"
-          class="text-red-500 text-sm"
-        >
-          Please select a branch
-        </span>
       </div>
     </div>
   </CustomDialog>
@@ -63,7 +65,9 @@ import { ref } from 'vue';
 import Tag from '@/components/Tag.vue';
 const branchStore = useBranchStore();
 const { selectedBranches, branches } = storeToRefs(branchStore);
+
 const saveClicked = ref(false);
+const branchSelect = ref(null);
 
 defineProps({
   isVisible: {
@@ -97,5 +101,7 @@ const addBranch = (id, name) => {
       name: name,
     });
   }
+  // Reset the select element back to the default option
+  branchSelect.value.value = '0';
 };
 </script>

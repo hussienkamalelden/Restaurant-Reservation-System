@@ -9,7 +9,7 @@
       <h2 class="text-xl text-text font-semibold mb-6">{{ title }}</h2>
 
       <!-- Body Slot -->
-      <div class="mb-12">
+      <div class="mb-8">
         <slot></slot>
       </div>
 
