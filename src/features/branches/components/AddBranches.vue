@@ -2,7 +2,7 @@
   <CustomDialog
     :is-visible="isVisible"
     title="Add Branches"
-    @close="$emit('close')"
+    @close="closeDialog"
     @save="handleSave"
   >
     <div class="space-y-4">
@@ -57,7 +57,7 @@ defineProps({
   },
 });
 
-defineEmits(['close', 'save']);
+const emit = defineEmits(['close', 'save']);
 
 const handleSave = () => {
   saveClicked.value = true;
@@ -67,5 +67,11 @@ const handleSave = () => {
     // You can emit the selected branch data to parent component
     // $emit('save', { branchId: selectedBranch.value })
   }
+};
+
+const closeDialog = () => {
+  saveClicked.value = false;
+  selectedBranch.value = 0;
+  emit('close');
 };
 </script>

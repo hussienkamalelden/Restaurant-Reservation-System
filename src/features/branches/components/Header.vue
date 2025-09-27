@@ -32,7 +32,6 @@
   <AddBranches
     :is-visible="isAddBranchesVisible"
     @close="handleCloseAddBranches"
-    @save="handleSaveAddBranches"
   />
 </template>
 

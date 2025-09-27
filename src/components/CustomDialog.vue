@@ -1,7 +1,7 @@
 <template>
   <div
     v-if="isVisible"
-    class="fixed inset-0 bg-black/70 flex items-center justify-center z-[3]"
+    class="fixed inset-0 bg-black/70 flex flex-col items-center justify-start pt-10 z-[3]"
     @click="$emit('close')"
   >
     <div class="bg-white rounded-lg p-6 max-w-md w-full mx-4" @click.stop>
