@@ -1,26 +1,12 @@
 <template>
   <div
-    class="inline-flex items-center gap-2 px-3 py-1.5 bg-primary-100 text-primary-800 text-sm font-medium rounded-full border border-primary-200 hover:bg-primary-200 transition-colors duration-200"
+    class="flex items-center justify-between gap-3 px-3 py-1.5 text-text rounded-xl border-2 border-primary bg-primary/10"
   >
-    <span class="select-none">{{ name }}</span>
-    <button
+    <span class="select-none text-sm font-medium">{{ name }}</span>
+    <i
+      class="icon-close cursor-pointer text-xs font-semibold text-white bg-primary rounded-full h-5 w-5 flex items-center justify-center leading-none"
       @click="handleRemove"
-      class="flex items-center justify-center w-4 h-4 text-primary-600 hover:text-primary-800 hover:bg-primary-300 rounded-full transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-opacity-50"
-    >
-      <svg
-        class="w-3 h-3"
-        fill="none"
-        stroke="currentColor"
-        viewBox="0 0 24 24"
-      >
-        <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="2"
-          d="M6 18L18 6M6 6l12 12"
-        />
-      </svg>
-    </button>
+    ></i>
   </div>
 </template>
 

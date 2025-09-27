@@ -31,6 +31,16 @@ i {
   -moz-osx-font-smoothing: grayscale;
 }
 
+.icon-plus {
+  &:before {
+    content: $icon-plus;
+  }
+}
+.icon-close {
+  &:before {
+    content: $icon-close;
+  }
+}
 .icon-burger-menu {
   &:before {
     content: $icon-burger-menu;

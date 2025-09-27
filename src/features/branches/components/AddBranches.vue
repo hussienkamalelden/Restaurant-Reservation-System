@@ -15,8 +15,13 @@
         </label>
         <select
           id="branch-select"
-          class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
-          @change="addBranch($event.target.value)"
+          class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary"
+          @change="
+            addBranch(
+              $event.target.value,
+              $event.target.options[$event.target.selectedIndex].text
+            )
+          "
         >
           <option disabled selected value="0">Choose a branch...</option>
           <option
@@ -30,7 +35,8 @@
             {{ branch.name }}
           </option>
         </select>
-        <div>
+        <!-- Selected Branches -->
+        <div class="flex flex-wrap gap-2 mt-2">
           <Tag
             v-for="branch in selectedBranches"
             :key="branch.id"
@@ -70,26 +76,26 @@ const emit = defineEmits(['close', 'save']);
 
 const handleSave = () => {
   saveClicked.value = true;
-  if (selectedBranches.value) {
+  if (selectedBranches.value.length > 0) {
+    closeDialog();
     emit('close');
   }
 };
 
 const closeDialog = () => {
   saveClicked.value = false;
-  selectedBranches.value = null;
+  selectedBranches.value = [];
   emit('close');
 };
 
-const addBranch = (item) => {
-  console.log(item);
-
-  const index = selectedBranches.value.findIndex(
-    (branch) => branch.id === item.id
-  );
+const addBranch = (id, name) => {
+  const index = selectedBranches.value.findIndex((branch) => branch.id === id);
 
   if (index === -1) {
-    selectedBranches.value.push(item);
+    selectedBranches.value.push({
+      id: id,
+      name: name,
+    });
   }
 };
 </script>
