@@ -17,6 +17,7 @@ import { onMounted } from 'vue';
 import Loading from '@/components/Loading.vue';
 import Table from '../components/Table.vue';
 import Header from '../components/Header.vue';
+import { minutesToHours } from '@/utils/time';
 
 const branchStore = useBranchStore();
 const { getBranches } = branchStore;
@@ -2257,7 +2258,7 @@ data = data.map((branch) => {
       (acc, section) => acc + section.tables.length,
       0
     ),
-    reservation_duration: `${branch.reservation_duration} Minutes`,
+    reservation_duration: `${minutesToHours(branch.reservation_duration)}`,
     accepts_reservations: branch.accepts_reservations ? 'Yes' : 'No',
   };
 });
