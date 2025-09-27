@@ -1,11 +1,12 @@
 <template>
-  <div
+  <teleport
+    to="body"
     v-if="visible && message"
     :class="toastClasses"
-    class="fixed top-4 left-1/2 transform -translate-x-1/2 z-[6] px-4 py-2 rounded-lg shadow-lg max-w-sm transition-all duration-300"
+    class="fixed top-4 left-1/2 transform -translate-x-1/2 z-[60] px-4 py-2 rounded-lg shadow-lg max-w-sm transition-all duration-300"
   >
     {{ message }}
-  </div>
+  </teleport>
 </template>
 
 <script setup>

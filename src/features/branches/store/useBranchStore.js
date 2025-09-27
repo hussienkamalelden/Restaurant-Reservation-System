@@ -23,8 +23,9 @@ export const useBranchStore = defineStore('branches', () => {
   const activateBranches = async (id, data) => {
     try {
       loading.value = true;
-      await branchesService.add(id, data);
+      const response = await branchesService.add(id, data);
       await getBranches();
+      return response;
     } catch (err) {
       error.value = err;
     } finally {
