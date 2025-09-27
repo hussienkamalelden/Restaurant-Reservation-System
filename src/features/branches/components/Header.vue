@@ -22,21 +22,35 @@
         <!-- Add Branches Button -->
         <button
           class="px-6 py-3 text-sm font-semibold rounded-xl text-white bg-primary cursor-pointer hover:bg-primary/90"
-          @click="handleAddBranches"
+          @click="isAddBranchesVisible = true"
         >
           Add Branches
         </button>
       </div>
     </div>
   </header>
+  <AddBranches
+    :is-visible="isAddBranchesVisible"
+    @close="handleCloseAddBranches"
+    @save="handleSaveAddBranches"
+  />
 </template>
 
 <script setup>
+import AddBranches from './AddBranches.vue';
+import { ref } from 'vue';
+
+const isAddBranchesVisible = ref(false);
+
 const handleDisableReservations = () => {
   console.log('Disable Reservations');
 };
 
-const handleAddBranches = () => {
-  console.log('Add Branches');
+const handleCloseAddBranches = () => {
+  isAddBranchesVisible.value = false;
+};
+
+const handleSaveAddBranches = () => {
+  console.log('Save Add Branches');
 };
 </script>

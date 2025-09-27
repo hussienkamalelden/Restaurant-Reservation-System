@@ -2,7 +2,7 @@
   <DefaultLayout>
     <Header />
     <section class="my-4">
-      <Table :headers="headers" :data="customData" />
+      <Table :headers="headers" :data="customData" :loading="loading" />
     </section>
   </DefaultLayout>
   <Toast :visible="error" :message="error" type="error" :duration="5000" />
@@ -13,7 +13,7 @@
 import DefaultLayout from '@/layouts/DefaultLayout.vue';
 import { useBranchStore } from '../store/useBranchStore';
 import { storeToRefs } from 'pinia';
-import { onMounted, ref, computed } from 'vue';
+import { onMounted, computed } from 'vue';
 import Loading from '@/components/Loading.vue';
 import Table from '../components/Table.vue';
 import Header from '../components/Header.vue';

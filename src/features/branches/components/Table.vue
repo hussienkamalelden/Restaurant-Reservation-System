@@ -43,7 +43,9 @@
 
     <!-- Empty data -->
     <div v-if="!data || data.length === 0" class="text-center py-12">
-      <p class="text-text text-lg">No data available</p>
+      <p class="text-text text-lg">
+        {{ loading ? 'Loading...' : 'No data available' }}
+      </p>
     </div>
   </div>
 </template>
@@ -59,6 +61,10 @@ const props = defineProps({
     type: Array,
     required: true,
     default: () => [],
+  },
+  loading: {
+    type: Boolean,
+    default: false,
   },
 });
 const editBranch = (row) => {
