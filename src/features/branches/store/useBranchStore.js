@@ -33,6 +33,16 @@ export const useBranchStore = defineStore('branches', () => {
     }
   };
 
+  const disableAllReservations = async (id) => {
+    try {
+      const response = await branchesService.disableAll(id);
+      await getBranches();
+      return response;
+    } catch (err) {
+      error.value = err;
+    }
+  };
+
   return {
     branches,
     loading,
@@ -40,5 +50,6 @@ export const useBranchStore = defineStore('branches', () => {
     selectedBranches,
     getBranches,
     activateBranches,
+    disableAllReservations,
   };
 });

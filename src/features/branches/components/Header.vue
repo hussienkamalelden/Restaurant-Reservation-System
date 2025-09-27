@@ -33,23 +33,29 @@
     :is-visible="isAddBranchesVisible"
     @close="handleCloseAddBranches"
   />
+  <DisableReservations
+    :is-visible="isDisableReservationsVisible"
+    @close="handleCloseDisableReservations"
+  />
 </template>
 
 <script setup>
 import AddBranches from './AddBranches.vue';
+import DisableReservations from './DisableReservations.vue';
 import { ref } from 'vue';
 
 const isAddBranchesVisible = ref(false);
+const isDisableReservationsVisible = ref(false);
 
 const handleDisableReservations = () => {
-  console.log('Disable Reservations');
+  isDisableReservationsVisible.value = true;
 };
 
 const handleCloseAddBranches = () => {
   isAddBranchesVisible.value = false;
 };
 
-const handleSaveAddBranches = () => {
-  console.log('Save Add Branches');
+const handleCloseDisableReservations = () => {
+  isDisableReservationsVisible.value = false;
 };
 </script>

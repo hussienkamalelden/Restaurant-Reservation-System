@@ -11,7 +11,7 @@
       <div
         v-if="isVisible && message"
         :class="toastClasses"
-        class="fixed top-4 left-1/2 transform -translate-x-1/2 z-[60] px-4 py-2 rounded-lg shadow-lg max-w-sm text-center"
+        class="fixed top-4 left-1/2 text-white transform -translate-x-1/2 z-[60] px-4 py-2 rounded-lg shadow-lg max-w-sm text-center"
       >
         {{ message }}
       </div>
@@ -32,7 +32,7 @@ const props = defineProps({
     default: 'info',
   },
   duration: {
-    type: Number,
+    type: [Number, String],
     default: 2000,
   },
   visible: {
@@ -50,11 +50,11 @@ let hideTimeout = null;
 const toastClasses = computed(() => {
   return (
     {
-      success: 'bg-green-500 text-white',
-      error: 'bg-red-500 text-white',
-      warning: 'bg-yellow-500 text-white',
-      info: 'bg-blue-500 text-white',
-    }[props.type] || 'bg-blue-500 text-white'
+      success: 'bg-green-500',
+      error: 'bg-red-500',
+      warning: 'bg-yellow-500',
+      info: 'bg-blue-500',
+    }[props.type] || 'bg-blue-500'
   );
 });
 
