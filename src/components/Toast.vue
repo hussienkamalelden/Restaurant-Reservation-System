@@ -2,7 +2,7 @@
   <div
     v-if="visible && message"
     :class="toastClasses"
-    class="fixed top-4 left-1/2 transform -translate-x-1/2 z-[5] px-4 py-2 rounded-lg shadow-lg max-w-sm transition-all duration-300"
+    class="fixed top-4 left-1/2 transform -translate-x-1/2 z-[6] px-4 py-2 rounded-lg shadow-lg max-w-sm transition-all duration-300"
   >
     {{ message }}
   </div>
@@ -14,7 +14,7 @@ import { ref, onMounted } from 'vue';
 const props = defineProps({
   message: {
     type: String,
-    required: true,
+    default: '',
   },
   type: {
     type: String,

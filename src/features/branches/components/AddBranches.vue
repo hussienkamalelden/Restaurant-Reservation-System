@@ -64,6 +64,7 @@ import { storeToRefs } from 'pinia';
 import { ref } from 'vue';
 import Tag from '@/components/Tag.vue';
 const branchStore = useBranchStore();
+const { activateBranches } = branchStore;
 const { selectedBranches, branches } = storeToRefs(branchStore);
 
 const saveClicked = ref(false);
@@ -78,17 +79,23 @@ defineProps({
 
 const emit = defineEmits(['close', 'save']);
 
-const handleSave = () => {
+const handleSave = async () => {
   saveClicked.value = true;
   if (selectedBranches.value.length > 0) {
+    await activateBranches(
+      selectedBranches.value.map((branch) => branch.id),
+      {
+        accepts_reservations: true,
+      }
+    );
     closeDialog();
-    emit('close');
   }
 };
 
 const closeDialog = () => {
   saveClicked.value = false;
   selectedBranches.value = [];
+  branchSelect.value.value = '0';
   emit('close');
 };
 
