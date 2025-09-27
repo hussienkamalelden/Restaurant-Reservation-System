@@ -1,7 +1,7 @@
 <template>
   <div class="min-h-screen flex flex-col">
     <Navbar />
-    <main class="flex-1">
+    <main class="flex-1 mt-24">
       <slot />
     </main>
     <Footer />

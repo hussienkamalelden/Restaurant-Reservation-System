@@ -1,11 +1,11 @@
 <template>
-  <nav class="bg-primary shadow-xl">
+  <nav class="bg-primary shadow-xl fixed top-0 left-0 right-0 z-50">
     <div class="container">
       <div class="flex justify-between items-center py-4">
         <img
           src="@/assets/images/logo.png"
           alt="Restaurant Logo"
-          class="h-8 w-auto sm:h-10"
+          class="h-6 w-auto"
         />
         <div
           class="hidden md:flex items-center bg-white/10 hover:bg-white/20 text-white border border-white/20 px-6 py-2.5 rounded-full text-sm font-medium transition-all duration-300 cursor-pointer select-none"
