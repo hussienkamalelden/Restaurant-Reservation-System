@@ -1,0 +1,39 @@
+@import 'tailwindcss';
+
+@theme {
+  /* Colors */
+  --color-primary: #5c2d91;
+  --color-text: #1f1f23;
+}
+
+/* Components */
+@layer components {
+  .container {
+    @apply mx-auto px-4 w-full;
+    max-width: 540px !important;
+  }
+
+  @media (min-width: 768px) {
+    .container {
+      max-width: 720px !important;
+    }
+  }
+
+  @media (min-width: 992px) {
+    .container {
+      max-width: 960px !important;
+    }
+  }
+
+  @media (min-width: 1200px) {
+    .container {
+      max-width: 1140px !important;
+    }
+  }
+
+  @media (min-width: 1400px) {
+    .container {
+      max-width: 1320px !important;
+    }
+  }
+}
