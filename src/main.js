@@ -1,6 +1,5 @@
 import { createApp } from 'vue';
 import './style.css';
-import './style2.scss';
 import './assets/icomoon/style.scss';
 import App from './App.vue';
 import router from './router';

@@ -1,0 +1,28 @@
+import { defineStore } from 'pinia';
+import { branchesService } from '../services/branchesService';
+import { ref } from 'vue';
+
+export const useBranchStore = defineStore('branches', () => {
+  const branches = ref([]);
+  const loading = ref(false);
+  const error = ref(null);
+
+  const getBranches = async () => {
+    try {
+      loading.value = true;
+      const { data } = await branchesService.getAll();
+      branches.value = data;
+    } catch (err) {
+      error.value = err;
+    } finally {
+      loading.value = false;
+    }
+  };
+
+  return {
+    branches,
+    loading,
+    error,
+    getBranches,
+  };
+});
