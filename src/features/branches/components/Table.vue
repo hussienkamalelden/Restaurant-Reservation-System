@@ -1,5 +1,7 @@
 <template>
-  <div class="w-full overflow-x-auto">
+  <div
+    class="w-full overflow-x-auto max-h-[60vh] overflow-y-auto border border-gray-200"
+  >
     <table class="min-w-full bg-white shadow-sm border border-gray-200">
       <thead class="bg-primary">
         <tr>
