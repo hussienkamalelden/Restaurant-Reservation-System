@@ -4,7 +4,7 @@ import DefaultLayout from '@/layouts/DefaultLayout.vue';
 
 <template>
   <DefaultLayout>
-    <h1>Branches</h1>
+    <h1 class="text-2xl font-bold text-primary">Branches</h1>
   </DefaultLayout>
 </template>
 
