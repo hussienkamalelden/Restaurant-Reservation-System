@@ -5,7 +5,13 @@
       <Table :headers="headers" :data="customData" :loading="loading" />
     </section>
   </DefaultLayout>
-  <Toast :visible="error" :message="error" type="error" :duration="5000" />
+  <Toast
+    :visible="error"
+    :message="error"
+    type="error"
+    :duration="5000"
+    @hide="error = false"
+  />
   <Loading v-if="loading" />
 </template>
 

@@ -56,10 +56,11 @@
     </div>
   </CustomDialog>
   <Toast
-    :visible="toast.visible"
-    :message="toast.message"
-    :type="toast.type"
-    :duration="toast.duration"
+    :visible="toastVisible"
+    message="Branches activated successfully"
+    type="success"
+    duration="5000"
+    @hide="toastVisible = false"
   />
 </template>
 
@@ -76,12 +77,7 @@ const { selectedBranches, branches } = storeToRefs(branchStore);
 
 const saveClicked = ref(false);
 const branchSelect = ref(null);
-const toast = ref({
-  visible: false,
-  message: '',
-  type: 'success',
-  duration: 5000,
-});
+const toastVisible = ref(false);
 
 defineProps({
   isVisible: {
@@ -101,13 +97,8 @@ const handleSave = async () => {
         accepts_reservations: true,
       }
     );
-    toast.value.visible = true;
     if (response.status === 200) {
-      toast.value.message = 'Branches activated successfully';
-      toast.value.type = 'success';
-    } else {
-      toast.value.message = 'Failed to activate branches';
-      toast.value.type = 'error';
+      toastVisible.value = true;
     }
     closeDialog();
   }
