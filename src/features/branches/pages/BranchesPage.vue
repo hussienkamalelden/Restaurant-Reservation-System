@@ -1,8 +1,10 @@
 <template>
   <DefaultLayout>
-    <h1 class="text-2xl font-bold text-primary">Branches</h1>
-    <Table :headers="headers" :data="data" />
-    <!-- <Table :headers="headers" :data="branches.data" /> -->
+    <Header />
+    <section class="my-4">
+      <Table :headers="headers" :data="data" />
+      <!-- <Table :headers="headers" :data="branches.data" /> -->
+    </section>
   </DefaultLayout>
   <Loading v-if="loading" />
 </template>
@@ -11,8 +13,10 @@
 import DefaultLayout from '@/layouts/DefaultLayout.vue';
 import { useBranchStore } from '../store/useBranchStore';
 import { storeToRefs } from 'pinia';
+import { onMounted } from 'vue';
 import Loading from '@/components/Loading.vue';
 import Table from '../components/Table.vue';
+import Header from '../components/Header.vue';
 
 const branchStore = useBranchStore();
 const { getBranches } = branchStore;
