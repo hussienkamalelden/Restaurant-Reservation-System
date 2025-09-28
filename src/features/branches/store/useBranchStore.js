@@ -15,7 +15,10 @@ export const useBranchStore = defineStore('branches', () => {
       loading.value = true;
       const { data } = await branchesService.getAll();
       branches.value = data;
+
       // Separate active and disabled branches
+      activeBranches.value = [];
+      disabledBranches.value = [];
       data?.data?.forEach((branch) => {
         if (branch.accepts_reservations) {
           activeBranches.value.push(branch);
