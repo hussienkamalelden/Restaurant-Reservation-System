@@ -3,12 +3,12 @@
     class="w-full overflow-x-auto max-h-[60vh] overflow-y-auto border border-gray-200"
   >
     <table class="min-w-full bg-white shadow-sm border border-gray-200">
-      <thead class="bg-primary">
+      <thead class="bg-primary sticky top-0 z-[2]">
         <tr>
           <th
             v-for="header in headers"
             :key="`${header.key}-header`"
-            class="px-6 py-3 text-left text-sm font-medium text-white uppercase"
+            class="px-6 py-3 text-left text-sm font-medium text-white uppercase sticky top-0 bg-primary"
           >
             {{ header.label }}
           </th>
