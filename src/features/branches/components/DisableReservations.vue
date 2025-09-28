@@ -49,17 +49,7 @@ defineProps({
   },
 });
 
-const emit = defineEmits(['close', 'save']);
-
-// const handleSave = async () => {
-//   const response = await processBranchesInBatches(
-//     '97a57184-e3e5-4d0e-8556-09270dcd686c'
-//   );
-//   if (response.status === 200) {
-//     toastVisible.value = true;
-//   }
-//   closeDialog();
-// };
+const emit = defineEmits(['close']);
 
 const handleSave = async () => {
   if (activeBranches.value.length > 0) {

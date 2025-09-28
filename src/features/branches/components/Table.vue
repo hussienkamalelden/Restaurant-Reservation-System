@@ -69,7 +69,9 @@ const props = defineProps({
     default: false,
   },
 });
+const emit = defineEmits(['row-click']);
+
 const editBranch = (row) => {
-  console.log(row);
+  emit('row-click', row);
 };
 </script>

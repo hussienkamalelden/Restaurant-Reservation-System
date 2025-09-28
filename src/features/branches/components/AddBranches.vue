@@ -92,7 +92,7 @@ defineProps({
   },
 });
 
-const emit = defineEmits(['close', 'save']);
+const emit = defineEmits(['close']);
 
 const handleSave = async () => {
   saveClicked.value = true;

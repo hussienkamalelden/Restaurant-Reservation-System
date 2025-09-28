@@ -2,7 +2,12 @@
   <DefaultLayout>
     <Header />
     <section class="my-4">
-      <Table :headers="headers" :data="customData" :loading="loading" />
+      <Table
+        :headers="headers"
+        :data="customData"
+        :loading="loading"
+        @row-click="handleRowClick"
+      />
     </section>
   </DefaultLayout>
   <Toast
@@ -13,16 +18,22 @@
     @hide="error = false"
   />
   <Loading v-if="loading" />
+  <EditBranch
+    :is-visible="showEditDialog"
+    :branch-data="selectedBranch"
+    @close="closeEditDialog"
+  />
 </template>
 
 <script setup>
 import DefaultLayout from '@/layouts/DefaultLayout.vue';
 import { useBranchStore } from '../store/useBranchStore';
 import { storeToRefs } from 'pinia';
-import { onMounted, computed } from 'vue';
+import { onMounted, computed, ref } from 'vue';
 import Loading from '@/components/Loading.vue';
 import Table from '../components/Table.vue';
 import Header from '../components/Header.vue';
+import EditBranch from '../components/EditBranch.vue';
 import { minutesToHours } from '@/utils/time';
 import Toast from '@/components/Toast.vue';
 
@@ -30,9 +41,25 @@ const branchStore = useBranchStore();
 const { getBranches } = branchStore;
 const { branches, loading, error } = storeToRefs(branchStore);
 
+// Edit dialog state
+const showEditDialog = ref(false);
+const selectedBranch = ref(null);
+
 onMounted(async () => {
   await getBranches();
 });
+
+// Handle row click from table
+const handleRowClick = (branch) => {
+  selectedBranch.value = branch;
+  showEditDialog.value = true;
+};
+
+// Close edit dialog
+const closeEditDialog = () => {
+  showEditDialog.value = false;
+  selectedBranch.value = null;
+};
 
 // Headers for the table
 const headers = [
