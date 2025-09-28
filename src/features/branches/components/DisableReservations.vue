@@ -15,8 +15,8 @@
   </CustomDialog>
   <Toast
     :visible="toastVisible"
-    message="Reservations disabled successfully"
-    type="success"
+    :message="toastMessage"
+    type="info"
     :duration="5000"
     @hide="toastVisible = false"
   />
@@ -27,10 +27,20 @@ import CustomDialog from '@/components/CustomDialog.vue';
 import Toast from '@/components/Toast.vue';
 import { useBranchStore } from '../store/useBranchStore';
 import { ref } from 'vue';
+import { useBranchBatchProcessor } from '../composables/useBranchBatchProcessor';
+import { storeToRefs } from 'pinia';
 const branchStore = useBranchStore();
-const { disableAllReservations } = branchStore;
+const { updateBranchesStatus, getBranches } = branchStore;
+const { activeBranches } = storeToRefs(branchStore);
+// Initialize the batch processor composable - arguments:(function, data, batch size)
+const { processBranchesInBatches } = useBranchBatchProcessor(
+  updateBranchesStatus,
+  { accepts_reservations: false },
+  3
+);
 
 const toastVisible = ref(false);
+const toastMessage = ref('');
 
 defineProps({
   isVisible: {
@@ -41,14 +51,33 @@ defineProps({
 
 const emit = defineEmits(['close', 'save']);
 
+// const handleSave = async () => {
+//   const response = await processBranchesInBatches(
+//     '97a57184-e3e5-4d0e-8556-09270dcd686c'
+//   );
+//   if (response.status === 200) {
+//     toastVisible.value = true;
+//   }
+//   closeDialog();
+// };
+
 const handleSave = async () => {
-  const response = await disableAllReservations(
-    '97a57184-e3e5-4d0e-8556-09270dcd686c'
-  );
-  if (response.status === 200) {
+  if (activeBranches.value.length > 0) {
+    const { successCount, failureCount } = await processBranchesInBatches(
+      activeBranches.value
+    );
+
+    // Update toast message based on results
+    toastMessage.value =
+      successCount > 0
+        ? `${successCount} branches disabled successfully, and ${failureCount} failed`
+        : `Failed to disable ${failureCount} branches`;
     toastVisible.value = true;
+
+    // Refresh the branches and close the dialog
+    await getBranches();
+    closeDialog();
   }
-  closeDialog();
 };
 
 const closeDialog = () => {

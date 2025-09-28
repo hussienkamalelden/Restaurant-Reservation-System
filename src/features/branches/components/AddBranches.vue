@@ -26,9 +26,7 @@
         >
           <option disabled selected value="0">Choose a branch...</option>
           <option
-            v-for="branch in branches?.data?.filter(
-              (branch) => branch.accepts_reservations === false
-            )"
+            v-for="branch in disabledBranches"
             :key="branch.id"
             :value="branch.id"
             :name="branch.name"
@@ -74,7 +72,7 @@ import Tag from '@/components/Tag.vue';
 import Toast from '@/components/Toast.vue';
 const branchStore = useBranchStore();
 const { updateBranchesStatus, getBranches } = branchStore;
-const { selectedBranches, branches } = storeToRefs(branchStore);
+const { selectedBranches, disabledBranches } = storeToRefs(branchStore);
 // Initialize the batch processor composable - arguments:(function, data, batch size)
 const { processBranchesInBatches } = useBranchBatchProcessor(
   updateBranchesStatus,
