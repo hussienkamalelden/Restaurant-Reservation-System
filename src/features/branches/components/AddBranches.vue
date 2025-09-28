@@ -57,8 +57,8 @@
   </CustomDialog>
   <Toast
     :visible="toastVisible"
-    message="Branches activated successfully"
-    type="success"
+    :message="toastMessage"
+    type="info"
     duration="5000"
     @hide="toastVisible = false"
   />
@@ -67,17 +67,25 @@
 <script setup>
 import CustomDialog from '@/components/CustomDialog.vue';
 import { useBranchStore } from '../store/useBranchStore';
+import { useBranchBatchProcessor } from '../composables/useBranchBatchProcessor';
 import { storeToRefs } from 'pinia';
 import { ref } from 'vue';
 import Tag from '@/components/Tag.vue';
 import Toast from '@/components/Toast.vue';
 const branchStore = useBranchStore();
-const { activateBranches } = branchStore;
+const { updateBranchesStatus, getBranches } = branchStore;
 const { selectedBranches, branches } = storeToRefs(branchStore);
+// Initialize the batch processor composable - arguments:(function, data, batch size)
+const { processBranchesInBatches } = useBranchBatchProcessor(
+  updateBranchesStatus,
+  { accepts_reservations: true },
+  3
+);
 
 const saveClicked = ref(false);
 const branchSelect = ref(null);
 const toastVisible = ref(false);
+const toastMessage = ref('');
 
 defineProps({
   isVisible: {
@@ -91,15 +99,19 @@ const emit = defineEmits(['close', 'save']);
 const handleSave = async () => {
   saveClicked.value = true;
   if (selectedBranches.value.length > 0) {
-    const response = await activateBranches(
-      selectedBranches.value.map((branch) => branch.id),
-      {
-        accepts_reservations: true,
-      }
+    const { successCount, failureCount } = await processBranchesInBatches(
+      selectedBranches.value
     );
-    if (response.status === 200) {
-      toastVisible.value = true;
-    }
+
+    // Update toast message based on results
+    toastMessage.value =
+      successCount > 0
+        ? `${successCount} branches activated successfully, and ${failureCount} failed`
+        : `Failed to activate ${failureCount} branches`;
+    toastVisible.value = true;
+
+    // Refresh the branches and close the dialog
+    await getBranches();
     closeDialog();
   }
 };

@@ -20,26 +20,15 @@ export const useBranchStore = defineStore('branches', () => {
     }
   };
 
-  const activateBranches = async (id, data) => {
+  const updateBranchesStatus = async (id, data) => {
     try {
       loading.value = true;
-      const response = await branchesService.add(id, data);
-      await getBranches();
+      const response = await branchesService.updateStatus(id, data);
       return response;
     } catch (err) {
       error.value = err;
     } finally {
       loading.value = false;
-    }
-  };
-
-  const disableAllReservations = async (id) => {
-    try {
-      const response = await branchesService.disableAll(id);
-      await getBranches();
-      return response;
-    } catch (err) {
-      error.value = err;
     }
   };
 
@@ -49,7 +38,6 @@ export const useBranchStore = defineStore('branches', () => {
     error,
     selectedBranches,
     getBranches,
-    activateBranches,
-    disableAllReservations,
+    updateBranchesStatus,
   };
 });
