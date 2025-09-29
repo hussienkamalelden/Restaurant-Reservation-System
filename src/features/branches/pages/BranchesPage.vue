@@ -33,7 +33,7 @@ import { onMounted, computed, ref } from 'vue';
 import Loading from '@/components/Loading.vue';
 import Table from '../components/Table.vue';
 import Header from '../components/Header.vue';
-import EditBranch from '../components/EditBranch.vue';
+import EditBranch from '../components/EditBranch/index.vue';
 import { minutesToHours } from '@/utils/time';
 import Toast from '@/components/Toast.vue';
 

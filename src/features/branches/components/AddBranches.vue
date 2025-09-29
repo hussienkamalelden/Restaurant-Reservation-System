@@ -9,7 +9,7 @@
       <div>
         <label
           for="branch-select"
-          class="block text-sm font-medium text-text mb-2"
+          class="block text-md font-medium text-text mb-1"
         >
           Select Branches
         </label>

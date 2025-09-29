@@ -28,7 +28,7 @@
           <div class="flex gap-1">
             <label
               for="reservation-duration"
-              class="block text-sm font-medium text-text mb-1"
+              class="block text-md font-medium text-text mb-1"
             >
               Reservation Duration (minutes)
             </label>
@@ -57,7 +57,7 @@
           <div class="flex gap-1">
             <label
               for="tables-select"
-              class="block text-sm font-medium text-text mb-1"
+              class="block text-md font-medium text-text mb-1"
             >
               Tables
             </label>
@@ -110,6 +110,9 @@
             />
           </div>
         </div>
+
+        <!-- Slots Box -->
+        <SlotsBox />
       </div>
     </div>
   </CustomDialog>
@@ -117,10 +120,11 @@
 
 <script setup>
 import CustomDialog from '@/components/CustomDialog.vue';
-import { Form, Field, ErrorMessage, useForm } from 'vee-validate';
+import { Field, ErrorMessage, useForm } from 'vee-validate';
 import { ref, watch, computed } from 'vue';
 import * as yup from 'yup';
 import Tag from '@/components/Tag.vue';
+import SlotsBox from './SlotsBox.vue';
 
 const props = defineProps({
   isVisible: {
