@@ -63,8 +63,9 @@
             </label>
           </div>
 
-          <Field name="tables" v-slot="{ errorMessage }">
+          <Field name="tables" v-slot="{ field, errorMessage }">
             <select
+              v-bind="field"
               id="tables-select"
               ref="tableSelect"
               :class="[
@@ -128,6 +129,8 @@ const props = defineProps({
 });
 
 const emit = defineEmits(['close']);
+const selectedTables = ref([]);
+const tableSelect = ref(null);
 
 // Dummy table data with section-table format
 const availableTables = ref([
@@ -137,11 +140,7 @@ const availableTables = ref([
   { id: 'B-1', name: 'Section B - Table 1', section: 'B', table: '1' },
 ]);
 
-// Selected tables ref
-const selectedTables = ref([]);
-const tableSelect = ref(null);
-
-// Enhanced validation schema
+// Schema
 const schema = yup.object({
   reservationDuration: yup
     .number()
