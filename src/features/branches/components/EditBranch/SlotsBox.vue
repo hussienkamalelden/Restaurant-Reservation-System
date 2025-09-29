@@ -125,7 +125,7 @@ const props = defineProps({
 // Reactive data
 const slots = ref([]);
 
-// Generate unique ID for each slot (globally unique across all days)
+// Generate unique ID for each slot
 let nextId = Date.now();
 
 // Add new slot

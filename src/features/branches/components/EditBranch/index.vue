@@ -236,11 +236,38 @@ const closeDialog = () => {
 
 // Apply on all days
 const applyOnAllDays = () => {
-  // selectedSlots.value = weekDays.value.map((item) => ({
-  //   ...selectedSlots.value,
-  //   day: item,
-  // }));
-  console.log('hi');
+  // Get Saturday's slots
+  const saturdaySlots = selectedSlots.value.filter(
+    (slot) => slot.day === 'Saturday'
+  );
+
+  if (saturdaySlots.length === 0) {
+    console.log('No Saturday slots to copy');
+    return;
+  }
+
+  // Remove all existing slots from other days (keep only Saturday slots)
+  const filteredSlots = selectedSlots.value.filter(
+    (slot) => slot.day === 'Saturday'
+  );
+
+  // Create new slots for each day based on Saturday's slots
+  const allDaysSlots = [];
+
+  weekDays.value.forEach((day) => {
+    saturdaySlots.forEach((saturdaySlot) => {
+      // Generate unique ID for each new slot
+      const newSlot = {
+        ...saturdaySlot,
+        day: day,
+        id: day === 'Saturday' ? saturdaySlot.id : Date.now() + Math.random(), // Keep original ID for Saturday, generate new for others
+      };
+      allDaysSlots.push(newSlot);
+    });
+  });
+
+  selectedSlots.value = allDaysSlots;
+  console.log('Applied Saturday slots to all days:', selectedSlots.value);
 };
 
 // Watch for prop changes to update form values
