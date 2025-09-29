@@ -274,10 +274,13 @@ const handleSave = handleSubmit(async (formValues) => {
 
 // Handle disable branch
 const handleDisableBranch = async () => {
-  await updateBranchesInfo(props.branchData?.id, {
-    accepts_reservations: false,
-  });
-  await getBranches();
+  try {
+    await updateBranchesInfo(props.branchData?.id, {
+      accepts_reservations: false,
+    });
+    await getBranches();
+    toastVisible.value = true;
+  } catch (error) {}
   closeDialog();
 };
 
