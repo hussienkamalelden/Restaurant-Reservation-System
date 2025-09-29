@@ -6,8 +6,9 @@
         {{ title || 'Title' }}
       </label>
       <h4
-        class="text-md font-medium text-primary cursor-pointer"
-        v-if="applyOnAllDays"
+        class="text-md font-medium text-primary cursor-pointer select-none"
+        v-if="isApplyOnAllDays"
+        @click="emit('applyOnAllDays')"
       >
         Apply on all days
       </h4>
@@ -30,6 +31,7 @@
               type="number"
               v-model="slot.fromHour"
               @input="formatHour(slot, 'fromHour')"
+              @change="updateSlot()"
               min="0"
               max="23"
               class="w-7 text-center outline-none text-text font-medium text-md bg-transparent border-none [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none [-moz-appearance:textfield]"
@@ -39,6 +41,7 @@
               type="number"
               v-model="slot.fromMinute"
               @input="formatMinute(slot, 'fromMinute')"
+              @change="updateSlot()"
               min="0"
               max="59"
               class="w-7 text-center outline-none text-text font-medium text-md bg-transparent border-none [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none [-moz-appearance:textfield]"
@@ -52,6 +55,7 @@
               type="number"
               v-model="slot.toHour"
               @input="formatHour(slot, 'toHour')"
+              @change="updateSlot()"
               min="0"
               max="23"
               class="w-7 text-center outline-none text-text font-medium text-md bg-transparent border-none [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none [-moz-appearance:textfield]"
@@ -61,6 +65,7 @@
               type="number"
               v-model="slot.toMinute"
               @input="formatMinute(slot, 'toMinute')"
+              @change="updateSlot()"
               min="0"
               max="59"
               class="w-7 text-center outline-none text-text font-medium text-md bg-transparent border-none [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none [-moz-appearance:textfield]"
@@ -99,19 +104,30 @@
 
 <script setup>
 import { ref, computed } from 'vue';
+import { useBranchStore } from '../../store/useBranchStore';
+import { storeToRefs } from 'pinia';
+const branchStore = useBranchStore();
+const { selectedSlots } = storeToRefs(branchStore);
+
+const emit = defineEmits(['applyOnAllDays']);
+
 const props = defineProps({
   title: {
     type: String,
     required: true,
   },
-  applyOnAllDays: {
+  isApplyOnAllDays: {
     type: Boolean,
     default: false,
+  },
+  slots: {
+    type: Array,
+    default: [],
   },
 });
 
 // Reactive data
-const slots = ref([]);
+const slots = ref(props.slots);
 
 // Generate unique ID for each slot
 let nextId = 1;
@@ -148,19 +164,22 @@ const formatMinute = (slot, field) => {
 // Delete slot
 const deleteSlot = (index) => {
   slots.value.splice(index, 1);
+  updateSlot();
 };
 
 // Convert slots to proper time format for parent component
 const formattedSlots = computed(() => {
   return slots.value.map((slot) => ({
+    day: props.title,
     id: slot.id,
     from: `${slot.fromHour}:${slot.fromMinute}`,
     to: `${slot.toHour}:${slot.toMinute}`,
   }));
 });
 
-// Expose slots data to parent component
-defineExpose({
-  slots: formattedSlots,
-});
+// Update slot
+const updateSlot = () => {
+  selectedSlots.value = formattedSlots.value;
+  console.log(selectedSlots.value);
+};
 </script>

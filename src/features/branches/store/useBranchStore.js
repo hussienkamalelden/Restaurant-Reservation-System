@@ -9,6 +9,7 @@ export const useBranchStore = defineStore('branches', () => {
   const selectedBranches = ref([]);
   const activeBranches = ref([]);
   const disabledBranches = ref([]);
+  const selectedSlots = ref([]);
 
   const getBranches = async () => {
     try {
@@ -52,6 +53,7 @@ export const useBranchStore = defineStore('branches', () => {
     selectedBranches,
     activeBranches,
     disabledBranches,
+    selectedSlots,
     getBranches,
     updateBranchesStatus,
   };

@@ -112,7 +112,13 @@
         </div>
 
         <!-- Slots Box -->
-        <SlotsBox />
+        <SlotsBox
+          v-for="day in weekDays"
+          :key="day"
+          :title="day"
+          :isApplyOnAllDays="day === 'Saturday'"
+          @applyOnAllDays="applyOnAllDays"
+        />
       </div>
     </div>
   </CustomDialog>
@@ -125,6 +131,10 @@ import { ref, watch, computed } from 'vue';
 import * as yup from 'yup';
 import Tag from '@/components/Tag.vue';
 import SlotsBox from './SlotsBox.vue';
+import { storeToRefs } from 'pinia';
+import { useBranchStore } from '../../store/useBranchStore';
+const branchStore = useBranchStore();
+const { selectedSlots } = storeToRefs(branchStore);
 
 const props = defineProps({
   isVisible: {
@@ -141,6 +151,18 @@ const emit = defineEmits(['close']);
 const selectedTables = ref([]);
 const tableSelect = ref(null);
 
+// Week days
+const weekDays = ref([
+  'Saturday',
+  'Sunday',
+  'Monday',
+  'Tuesday',
+  'Wednesday',
+  'Thursday',
+  'Friday',
+]);
+
+// Available tables
 const availableTables = computed(() => {
   return props.branchData?.sections.flatMap((section) =>
     section.tables.map((table) => ({
@@ -208,7 +230,17 @@ const handleSave = handleSubmit(async (formValues) => {
 // Close dialog
 const closeDialog = () => {
   selectedTables.value = [];
+  selectedSlots.value = [];
   emit('close');
+};
+
+// Apply on all days
+const applyOnAllDays = () => {
+  // selectedSlots.value = weekDays.value.map((item) => ({
+  //   ...selectedSlots.value,
+  //   day: item,
+  // }));
+  console.log('hi');
 };
 
 // Watch for prop changes to update form values
