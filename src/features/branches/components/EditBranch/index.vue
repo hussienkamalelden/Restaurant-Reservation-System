@@ -143,6 +143,13 @@
       </div>
     </div>
   </CustomDialog>
+  <Toast
+    :visible="toastVisible"
+    message="Branch updated successfully"
+    type="success"
+    :duration="5000"
+    @hide="toastVisible = false"
+  />
 </template>
 
 <script setup>
@@ -155,6 +162,7 @@ import SlotsBox from './SlotsBox.vue';
 import { storeToRefs } from 'pinia';
 import { useBranchStore } from '../../store/useBranchStore';
 import { useSlots } from '../../composables/useSlots.js';
+import Toast from '@/components/Toast.vue';
 const branchStore = useBranchStore();
 const { selectedSlots } = storeToRefs(branchStore);
 const { updateBranchesInfo, getBranches } = branchStore;
@@ -176,6 +184,7 @@ const selectedTables = ref([]);
 const tableSelect = ref(null);
 const errors = ref([]);
 const weekDays = ref([]);
+const toastVisible = ref(false);
 
 // Available tables
 const availableTables = computed(() => {
@@ -253,10 +262,13 @@ const handleSave = handleSubmit(async (formValues) => {
   if (errors.value.length > 0) {
     return;
   }
-  await updateBranchesInfo(props.branchData?.id, {
-    reservation_duration: formValues.reservationDuration,
-  });
-  await getBranches();
+  try {
+    await updateBranchesInfo(props.branchData?.id, {
+      reservation_duration: formValues.reservationDuration,
+    });
+    await getBranches();
+    toastVisible.value = true;
+  } catch (error) {}
   closeDialog();
 });
 
