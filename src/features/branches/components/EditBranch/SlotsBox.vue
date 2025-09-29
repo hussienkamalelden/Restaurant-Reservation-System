@@ -32,7 +32,7 @@
               @input="formatHour(slot, 'fromHour')"
               min="0"
               max="23"
-              class="w-8 text-center outline-none text-text font-medium text-md bg-transparent border-none [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none [-moz-appearance:textfield]"
+              class="w-7 text-center outline-none text-text font-medium text-md bg-transparent border-none [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none [-moz-appearance:textfield]"
             />
             <span class="text-text font-medium text-sm">:</span>
             <input
@@ -41,7 +41,7 @@
               @input="formatMinute(slot, 'fromMinute')"
               min="0"
               max="59"
-              class="w-8 text-center outline-none text-text font-medium text-md bg-transparent border-none [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none [-moz-appearance:textfield]"
+              class="w-7 text-center outline-none text-text font-medium text-md bg-transparent border-none [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none [-moz-appearance:textfield]"
             />
 
             <!-- Separator -->
@@ -54,7 +54,7 @@
               @input="formatHour(slot, 'toHour')"
               min="0"
               max="23"
-              class="w-8 text-center outline-none text-text font-medium text-md bg-transparent border-none [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none [-moz-appearance:textfield]"
+              class="w-7 text-center outline-none text-text font-medium text-md bg-transparent border-none [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none [-moz-appearance:textfield]"
             />
             <span class="text-text font-medium text-sm">:</span>
             <input
@@ -63,7 +63,7 @@
               @input="formatMinute(slot, 'toMinute')"
               min="0"
               max="59"
-              class="w-8 text-center outline-none text-text font-medium text-md bg-transparent border-none [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none [-moz-appearance:textfield]"
+              class="w-7 text-center outline-none text-text font-medium text-md bg-transparent border-none [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none [-moz-appearance:textfield]"
             />
           </div>
 
@@ -159,7 +159,7 @@ const formattedSlots = computed(() => {
   }));
 });
 
-// Expose slots data to parent component if needed
+// Expose slots data to parent component
 defineExpose({
   slots: formattedSlots,
 });

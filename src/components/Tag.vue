@@ -1,6 +1,6 @@
 <template>
   <div
-    class="flex items-center justify-between gap-3 px-3 py-1.5 text-text rounded-md border-2 border-primary bg-primary/10"
+    class="flex items-center justify-between gap-3 px-3 py-2 text-text rounded-md border border-primary bg-primary/10"
   >
     <span class="select-none text-sm font-medium">{{ name }}</span>
     <i
