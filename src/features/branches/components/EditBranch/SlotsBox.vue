@@ -120,17 +120,13 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
-  slots: {
-    type: Array,
-    default: [],
-  },
 });
 
 // Reactive data
-const slots = ref(props.slots);
+const slots = ref([]);
 
-// Generate unique ID for each slot
-let nextId = 1;
+// Generate unique ID for each slot (globally unique across all days)
+let nextId = Date.now();
 
 // Add new slot
 const addSlot = () => {
@@ -179,7 +175,32 @@ const formattedSlots = computed(() => {
 
 // Update slot
 const updateSlot = () => {
-  selectedSlots.value = formattedSlots.value;
+  const currentDaySlots = formattedSlots.value;
+  const updatedSlots = [...selectedSlots.value];
+
+  currentDaySlots.forEach((currentSlot) => {
+    // Find existing slot with same day and id
+    const existingSlotIndex = updatedSlots.findIndex(
+      (slot) => slot.day === currentSlot.day && slot.id === currentSlot.id
+    );
+
+    if (existingSlotIndex !== -1) {
+      // Update existing slot
+      updatedSlots[existingSlotIndex] = currentSlot;
+    } else {
+      // Add new slot
+      updatedSlots.push(currentSlot);
+    }
+  });
+
+  // Remove slots from current day that are no longer in formattedSlots
+  const currentDaySlotIds = currentDaySlots.map((slot) => slot.id);
+  const filteredSlots = updatedSlots.filter((slot) => {
+    // Keep slots from other days, or slots from current day that still exist
+    return slot.day !== props.title || currentDaySlotIds.includes(slot.id);
+  });
+
+  selectedSlots.value = filteredSlots;
   console.log(selectedSlots.value);
 };
 </script>

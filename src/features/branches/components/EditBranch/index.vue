@@ -117,7 +117,6 @@
           :key="day"
           :title="day"
           :isApplyOnAllDays="day === 'Saturday'"
-          :slots="selectedSlots?.filter((slot) => slot.day === day)"
           @applyOnAllDays="applyOnAllDays"
         />
       </div>
