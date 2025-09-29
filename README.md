@@ -1,6 +1,6 @@
 # Restaurant Reservation System
 
-A modern Vue.js application for managing restaurant branch reservations, built with Vue 3 Composition API, Pinia state management, and Tailwind CSS.
+Vue.js application for managing restaurant branch reservations, built with Vue 3 Composition API, Pinia state management, and Tailwind CSS.
 
 ## 🏗️ Project Structure
 
@@ -46,18 +46,15 @@ src/
 
 **Rationale**: Organizes code by business features rather than technical layers, making it easier to:
 
-- Locate related functionality
 - Scale the application with new features
 - Maintain feature isolation
 - Enable team collaboration on different features
 
-### 2. **Vue 3 Composition API with `<script setup>`**
+### 2. **Vue 3 Composition API**
 
 **Rationale**:
 
-- Better TypeScript support and type inference
 - More flexible logic reuse through composables
-- Improved performance with better tree-shaking
 - Cleaner, more concise component code
 
 ### 3. **Pinia for State Management**
@@ -65,9 +62,7 @@ src/
 **Rationale**:
 
 - Official Vue state management solution
-- Better TypeScript support than Vuex
-- Simplified API with less boilerplate
-- Excellent DevTools integration
+- Syntax is much cleaner
 
 ### 4. **Composables Pattern for Logic Reuse**
 
@@ -76,8 +71,6 @@ src/
 **Rationale**:
 
 - Encapsulates and reuses complex business logic
-- Enables better testing of business logic in isolation
-- Follows Vue 3 best practices for composition
 - Improves code maintainability
 
 ### 5. **Service Layer Pattern**
@@ -88,8 +81,6 @@ src/
 
 - Separates API logic from components
 - Enables easy API endpoint changes
-- Facilitates mocking for testing
-- Provides consistent error handling
 
 ### 6. **Batch Processing for API Operations**
 
@@ -108,7 +99,6 @@ src/
 
 - Declarative schema-based validation
 - Excellent Vue 3 integration
-- Reusable validation schemas
 - Better user experience with real-time validation
 
 ### 8. **Tailwind CSS for Styling**
@@ -132,7 +122,7 @@ src/
 1. **Clone the repository**
 
    ```bash
-   git clone <repository-url>
+   git clone <https://github.com/hussienkamalelden/Restaurant-Reservation-System.git>
    cd Restaurant-Reservation-System
    ```
 
@@ -186,7 +176,6 @@ src/
 
 - **Time Slot Validation**: Prevents overlapping reservations and validates against business hours
 - **Batch Operations**: Efficiently handles multiple branch updates
-- **Responsive Design**: Works seamlessly on desktop and mobile devices
 - **Real-time Feedback**: Toast notifications for user actions
 
 ## 🛠️ Technical Features
@@ -199,7 +188,7 @@ src/
 
 ### Error Handling
 
-- **Axios Interceptors**: Automatic token refresh and error handling
+- **Axios Interceptors**: Automatic token error handling
 - **Form Validation**: Real-time validation with user-friendly error messages
 - **API Error Management**: Graceful handling of network and server errors
 
@@ -207,7 +196,6 @@ src/
 
 - **Centralized Store**: Branch data managed through Pinia store
 - **Reactive Updates**: Automatic UI updates when data changes
-- **Optimistic Updates**: Immediate UI feedback for better user experience
 
 ## 🔧 Configuration
 
@@ -264,22 +252,3 @@ The application uses a consistent design system built with Tailwind CSS:
 - **Text Color**: Dark gray (`#1f1f23`)
 - **Responsive Breakpoints**: Mobile-first approach
 - **Component Library**: Reusable components with consistent styling
-
-## 🚧 Future Enhancements
-
-Based on the code analysis, potential improvements include:
-
-- **TypeScript Integration**: For better type safety
-- **Unit Testing**: With Vitest or Jest
-- **API Response Caching**: For improved performance
-- **Internationalization**: Multi-language support
-- **Error Boundaries**: Better error handling and recovery
-- **Performance Monitoring**: Real-time performance tracking
-
-## 📄 License
-
-[Add your license information here]
-
----
-
-_This project demonstrates modern Vue.js development practices with a focus on maintainability, scalability, and user experience._
