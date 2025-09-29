@@ -8,7 +8,7 @@ export const useSlots = () => {
   const apply = async (weekDays) => {
     // Get Saturday's slots
     const saturdaySlots = selectedSlots.value.filter(
-      (slot) => slot.day === 'Saturday'
+      (slot) => slot.day === 'saturday'
     );
 
     if (saturdaySlots.length === 0) {
@@ -22,8 +22,11 @@ export const useSlots = () => {
         // Generate unique ID for each new slot
         const newSlot = {
           ...saturdaySlot,
-          day: day,
-          id: day === 'Saturday' ? saturdaySlot.id : Date.now() + Math.random(), // Keep original ID for Saturday, generate new for others
+          day: day.name,
+          id:
+            day.name === 'saturday'
+              ? saturdaySlot.id
+              : Date.now() + Math.random(), // Keep original ID for Saturday, generate new for others
         };
         allDaysSlots.push(newSlot);
       });

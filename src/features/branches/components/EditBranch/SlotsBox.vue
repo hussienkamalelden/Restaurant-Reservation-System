@@ -2,7 +2,7 @@
   <div class="flex flex-col">
     <!-- Title -->
     <div class="flex items-center justify-between mb-1">
-      <label class="block text-md font-medium text-text">
+      <label class="block text-md font-medium text-text capitalize">
         {{ title || 'Title' }}
       </label>
       <h4

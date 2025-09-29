@@ -125,9 +125,9 @@
         <!-- Box -->
         <SlotsBox
           v-for="day in weekDays"
-          :key="day"
-          :title="day"
-          :isApplyOnAllDays="day === 'Saturday'"
+          :key="day.name"
+          :title="day.name"
+          :isApplyOnAllDays="day.name === 'saturday'"
           @applyOnAllDays="applyOnAllDays"
         />
       </div>
@@ -164,17 +164,7 @@ const emit = defineEmits(['close']);
 const selectedTables = ref([]);
 const tableSelect = ref(null);
 const errors = ref([]);
-
-// Week days
-const weekDays = ref([
-  'Saturday',
-  'Sunday',
-  'Monday',
-  'Tuesday',
-  'Wednesday',
-  'Thursday',
-  'Friday',
-]);
+const weekDays = ref([]);
 
 // Available tables
 const availableTables = computed(() => {
@@ -266,6 +256,18 @@ watch(
   (newBranchData) => {
     if (newBranchData?.reservation_duration) {
       setFieldValue('reservationDuration', newBranchData.reservation_duration);
+    }
+    if (newBranchData?.reservation_times) {
+      weekDays.value = Object.entries(newBranchData?.reservation_times).map(
+        ([day, times]) => {
+          const [start, end] = times?.[0] || [null, null];
+          return {
+            name: day,
+            startReservation: start,
+            endReservation: end,
+          };
+        }
+      );
     }
   },
   { deep: true, immediate: true }
