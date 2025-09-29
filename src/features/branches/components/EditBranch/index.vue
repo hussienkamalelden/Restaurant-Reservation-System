@@ -128,7 +128,7 @@
               v-for="error in getDayErrors(day.name)"
               :key="error"
             >
-              - {{ error }}
+              • {{ error }}
             </span>
           </div>
         </div>

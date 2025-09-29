@@ -13,7 +13,7 @@
       </h2>
 
       <!-- Body Slot -->
-      <div class="mb-8 max-h-[50vh] overflow-y-auto">
+      <div class="mb-8 max-h-[50vh] overflow-y-auto px-2">
         <slot></slot>
       </div>
 
