@@ -46,6 +46,19 @@ export const useBranchStore = defineStore('branches', () => {
     }
   };
 
+  const updateBranchInfo = async (id, data) => {
+    try {
+      loading.value = true;
+      const response = await branchesService.updateInfo(id, data);
+      getBranches();
+      return response;
+    } catch (err) {
+      error.value = err;
+    } finally {
+      loading.value = false;
+    }
+  };
+
   return {
     branches,
     loading,
@@ -56,5 +69,6 @@ export const useBranchStore = defineStore('branches', () => {
     selectedSlots,
     getBranches,
     updateBranchesStatus,
+    updateBranchInfo,
   };
 });

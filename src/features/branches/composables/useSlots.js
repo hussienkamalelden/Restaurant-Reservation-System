@@ -59,6 +59,9 @@ export const useSlots = () => {
 
   // Validate all selected slots
   const validateSlots = (dayName, minTime, maxTime) => {
+    if (!minTime || !maxTime) {
+      return [];
+    }
     const errors = [];
     const minMinutes = timeToMinutes(minTime);
     const maxMinutes = timeToMinutes(maxTime);

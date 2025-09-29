@@ -149,6 +149,7 @@ import { useBranchStore } from '../../store/useBranchStore';
 import { useSlots } from '../../composables/useSlots.js';
 const branchStore = useBranchStore();
 const { selectedSlots } = storeToRefs(branchStore);
+const { updateBranchInfo } = branchStore;
 const { apply, validateSlots } = useSlots();
 
 const props = defineProps({
@@ -230,12 +231,6 @@ const removeTable = (id) => {
 
 // Handle save
 const handleSave = handleSubmit(async (formValues) => {
-  const data = {
-    id: props.branchData?.id,
-    reservationDuration: formValues.reservationDuration,
-    tables: formValues.tables,
-  };
-
   // Validate each day individually
   errors.value = [];
   weekDays.value.forEach((day) => {
@@ -250,6 +245,9 @@ const handleSave = handleSubmit(async (formValues) => {
   if (errors.value.length > 0) {
     return;
   }
+  await updateBranchInfo(props.branchData?.id, {
+    reservation_duration: formValues.reservationDuration,
+  });
   closeDialog();
 });
 
