@@ -158,6 +158,7 @@ const schema = yup.object({
     .required('Reservation duration is required')
     .max(480, 'Maximum duration is 8 hours')
     .positive('Duration must be positive'),
+  tables: yup.array(),
 });
 
 // Form setup with VeeValidate
