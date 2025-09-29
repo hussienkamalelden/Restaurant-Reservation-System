@@ -74,7 +74,13 @@
               )
             "
           >
-            <option disabled selected value="">Select tables...</option>
+            <option disabled selected value="">
+              {{
+                !availableTables || availableTables.length === 0
+                  ? 'No available tables'
+                  : 'Select tables...'
+              }}
+            </option>
             <option
               v-for="table in availableTables"
               :key="table.id"
