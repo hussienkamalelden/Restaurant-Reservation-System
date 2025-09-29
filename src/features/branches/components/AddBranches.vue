@@ -30,6 +30,9 @@
             :key="branch.id"
             :value="branch.id"
             :name="branch.name"
+            :disabled="
+              selectedBranches.some((selected) => selected.id === branch.id)
+            "
           >
             {{ branch.name }}
           </option>
@@ -48,6 +51,7 @@
             :key="branch.id"
             :name="branch.name"
             :id="branch.id"
+            @remove="handleRemove"
           />
         </div>
       </div>
@@ -132,5 +136,13 @@ const addBranch = (id, name) => {
   }
   // Reset the select element back to the default option
   branchSelect.value.value = '0';
+};
+
+const handleRemove = (id) => {
+  // Check if the id is in selectedBranch array and remove it
+  const index = selectedBranches.value.findIndex((branch) => branch.id === id);
+  if (index !== -1) {
+    selectedBranches.value.splice(index, 1);
+  }
 };
 </script>

@@ -21,20 +21,14 @@
     </div>
 
     <!-- Reservation Form  -->
-    <Form
-      :validation-schema="schema"
-      :initial-values="{
-        reservationDuration: branchData?.reservation_duration || null,
-      }"
-      @submit="handleSave"
-    >
+    <div>
       <div class="space-y-4">
         <!-- Reservation Duration -->
         <div>
           <div class="flex gap-1">
             <label
               for="reservation-duration"
-              class="block text-sm font-medium text-text mb-2"
+              class="block text-sm font-medium text-text mb-1"
             >
               Reservation Duration (minutes)
             </label>
@@ -59,33 +53,68 @@
         </div>
 
         <!-- Tables Select -->
-        <!-- <div>
-          <label
-            for="tables-select"
-            class="block text-sm font-medium text-text mb-2"
-          >
-            Number of Tables
-          </label>
-          <select
-            id="tables-select"
-            v-model="selectedTables"
-            class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary"
-          >
-            <option disabled value="">Choose number of tables...</option>
-            <option v-for="table in tableOptions" :key="table" :value="table">
-              {{ table }} {{ table === 1 ? 'table' : 'tables' }}
-            </option>
-          </select>
-        </div> -->
+        <div>
+          <div class="flex gap-1">
+            <label
+              for="tables-select"
+              class="block text-sm font-medium text-text mb-1"
+            >
+              Select Tables
+            </label>
+          </div>
+
+          <Field name="tables" v-slot="{ errorMessage }">
+            <select
+              id="tables-select"
+              ref="tableSelect"
+              :class="[
+                'w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary',
+                errorMessage ? 'border-red-500' : 'border-gray-300',
+              ]"
+              @change="
+                addTable(
+                  $event.target.value,
+                  $event.target.options[$event.target.selectedIndex].text
+                )
+              "
+            >
+              <option disabled selected value="">Choose a table...</option>
+              <option
+                v-for="table in availableTables"
+                :key="table.id"
+                :value="table.id"
+                :disabled="
+                  selectedTables.some((selected) => selected.id === table.id)
+                "
+              >
+                {{ table.name }}
+              </option>
+            </select>
+          </Field>
+          <ErrorMessage name="tables" class="mt-1 text-sm text-red-600" />
+
+          <!-- Selected Branches -->
+          <div class="flex flex-wrap gap-2 mt-2">
+            <Tag
+              v-for="table in selectedTables"
+              :key="table.id"
+              :name="table.name"
+              :id="table.id"
+              @remove="removeTable"
+            />
+          </div>
+        </div>
       </div>
-    </Form>
+    </div>
   </CustomDialog>
 </template>
 
 <script setup>
 import CustomDialog from '@/components/CustomDialog.vue';
-import { Form, Field, ErrorMessage } from 'vee-validate';
+import { Form, Field, ErrorMessage, useForm } from 'vee-validate';
+import { ref, watch } from 'vue';
 import * as yup from 'yup';
+import Tag from '@/components/Tag.vue';
 
 const props = defineProps({
   isVisible: {
@@ -100,7 +129,19 @@ const props = defineProps({
 
 const emit = defineEmits(['close']);
 
-// Simple validation schema
+// Dummy table data with section-table format
+const availableTables = ref([
+  { id: 'A-1', name: 'Section A - Table 1', section: 'A', table: '1' },
+  { id: 'A-2', name: 'Section A - Table 2', section: 'A', table: '2' },
+  { id: 'A-3', name: 'Section A - Table 3', section: 'A', table: '3' },
+  { id: 'B-1', name: 'Section B - Table 1', section: 'B', table: '1' },
+]);
+
+// Selected tables ref
+const selectedTables = ref([]);
+const tableSelect = ref(null);
+
+// Enhanced validation schema
 const schema = yup.object({
   reservationDuration: yup
     .number()
@@ -111,38 +152,58 @@ const schema = yup.object({
     .required('Reservation duration is required')
     .max(480, 'Maximum duration is 8 hours')
     .positive('Duration must be positive'),
+  tables: yup
+    .array()
+    .min(1, 'Please select at least one table')
+    .required('Table selection is required'),
 });
 
-const formatTime = (time) => {
-  if (!time) return '00:00';
+// Form setup with VeeValidate
+const { setFieldValue, values, handleSubmit, validate } = useForm({
+  validationSchema: schema,
+  initialValues: {
+    reservationDuration: props?.branchData?.reservation_duration || null,
+    tables: [],
+  },
+});
 
-  // If time is already in HH:MM format, return as is
-  if (typeof time === 'string' && time.includes(':')) {
-    return time;
-  }
+// Add table to selected tables
+const addTable = (tableId, tableName) => {
+  const index = selectedTables.value.findIndex((table) => table.id === tableId);
 
-  // If time is in other format, try to parse and format
-  try {
-    const date = new Date(`1970-01-01T${time}`);
-    return date.toLocaleTimeString('en-US', {
-      hour12: false,
-      hour: '2-digit',
-      minute: '2-digit',
+  if (index === -1) {
+    selectedTables.value.push({
+      id: tableId,
+      name: tableName,
     });
-  } catch {
-    return '00:00';
+  }
+  // Reset the select element back to the default option
+  if (tableSelect.value) {
+    tableSelect.value.value = '';
   }
 };
 
-const handleSave = (values) => {
+// Remove table from selected tables
+const removeTable = (tableId) => {
+  const index = selectedTables.value.findIndex((table) => table.id === tableId);
+  if (index !== -1) {
+    selectedTables.value.splice(index, 1);
+  }
+};
+
+const handleSave = handleSubmit(async (formValues) => {
   const data = {
     id: props.branchData?.id,
-    reservationDuration: values.reservationDuration,
+    reservationDuration: formValues.reservationDuration,
+    tables: formValues.tables,
   };
+  // Here you would typically emit the save event or call an API
+  console.log('Form data:', data);
   closeDialog();
-};
+});
 
 const closeDialog = () => {
+  selectedTables.value = [];
   emit('close');
 };
 </script>
