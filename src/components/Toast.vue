@@ -24,7 +24,7 @@ import { ref, watch, computed } from 'vue';
 
 const props = defineProps({
   message: {
-    type: String,
+    type: [String, Boolean],
     default: '',
   },
   type: {
@@ -36,7 +36,7 @@ const props = defineProps({
     default: 2000,
   },
   visible: {
-    type: Boolean,
+    type: [Boolean, String],
     default: false,
   },
 });
