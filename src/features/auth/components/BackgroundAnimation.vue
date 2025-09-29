@@ -1,6 +1,6 @@
 <template>
   <div
-    class="min-h-screen bg-primary flex items-center justify-center p-4 relative overflow-hidden"
+    class="min-h-screen bg-primary flex flex-col gap-4 items-center justify-center p-4 relative overflow-hidden"
   >
     <!-- Animated background -->
     <div class="absolute inset-0 overflow-hidden">
@@ -16,6 +16,7 @@
         style="animation-delay: 1s"
       ></div>
     </div>
+    <img src="@/assets/images/logo.png" alt="Foodics" class="h-8" />
     <slot />
   </div>
 </template>
