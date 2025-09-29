@@ -4,7 +4,7 @@ Vue.js application for managing restaurant branch reservations, built with Vue 3
 
 ## 📊 System Flow
 
-### [Live demo](https://foodics-task.vercel.app)
+### Live demo: [Link](https://foodics-task.vercel.app)
 <img width="3813" height="2321" alt="Restaurant Reservation System Flowchart" src="https://github.com/user-attachments/assets/59dda1d6-0642-42ca-ac51-d3f0c69049eb" />
 
 ## 🏗️ Project Structure
