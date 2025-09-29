@@ -121,7 +121,7 @@
           <!-- Day-specific errors -->
           <div
             v-if="getDayErrors(day.name).length > 0"
-            class="flex flex-col gap-1 ml-4"
+            class="flex flex-col gap-1"
           >
             <span
               class="text-red-600 text-sm capitalize"
