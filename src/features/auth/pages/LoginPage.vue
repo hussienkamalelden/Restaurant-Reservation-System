@@ -6,8 +6,8 @@
     >
       <!-- Title -->
       <div class="text-center mb-8">
-        <h1 class="text-3xl font-bold text-gray-800 mb-2">Welcome</h1>
-        <p class="text-gray-600 text-lg">Foodics Reservation System</p>
+        <h1 class="text-3xl font-bold text-primary mb-2">Login</h1>
+        <p class="text-text text-lg">Foodics Reservation System</p>
       </div>
 
       <!-- Form -->
@@ -16,7 +16,7 @@
           <div class="relative">
             <label
               for="token"
-              class="block text-base font-medium text-gray-700 mb-1"
+              class="block text-base font-medium text-text mb-1"
             >
               Token: <span class="text-red-500">*</span>
             </label>
@@ -25,7 +25,7 @@
               type="text"
               placeholder="Please enter your token"
               id="token"
-              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all duration-200 text-gray-700"
+              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all duration-200 text-text"
               :class="{ 'border-red-500 focus:ring-red-500': errorMessage }"
             />
           </div>
@@ -75,7 +75,7 @@ const onSubmit = handleSubmit(async (values) => {
   localStorage.setItem('token', values.token);
   try {
     loading.value = true;
-    const response = await loginService.checkToken();
+    await loginService.checkToken();
     router.push('/branches');
   } catch (error) {
     // Check status because it HEAD request, so it won't have a message in response
