@@ -6,7 +6,11 @@
   >
     <div class="bg-white rounded-lg p-6 max-w-md w-full mx-4" @click.stop>
       <!-- Title -->
-      <h2 class="text-xl text-text font-semibold mb-6">{{ title }}</h2>
+      <h2
+        class="text-xl text-text font-semibold mb-6 border-b border-gray-200 pb-3"
+      >
+        {{ title }}
+      </h2>
 
       <!-- Body Slot -->
       <div class="mb-8">

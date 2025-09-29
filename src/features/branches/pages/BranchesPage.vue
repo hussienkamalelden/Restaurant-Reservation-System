@@ -66,7 +66,7 @@ const headers = [
   { key: 'name', label: 'Branch' },
   { key: 'reference', label: 'Reference' },
   { key: 'number_of_tables', label: 'Number of Tables' },
-  { key: 'reservation_duration', label: 'Reservation Duration' },
+  { key: 'reservation_duration_formatted', label: 'Reservation Duration' },
   { key: 'accepts_reservations', label: 'Accepts Reservations' },
 ];
 
@@ -79,7 +79,9 @@ const customData = computed(() => {
         (acc, section) => acc + section.tables.length,
         0
       ),
-      reservation_duration: `${minutesToHours(branch.reservation_duration)}`,
+      reservation_duration_formatted: `${minutesToHours(
+        branch.reservation_duration
+      )}`,
       accepts_reservations: branch.accepts_reservations ? 'Yes' : 'No',
     };
   });

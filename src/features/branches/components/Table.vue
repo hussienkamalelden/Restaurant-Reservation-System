@@ -45,7 +45,7 @@
 
     <!-- Empty data -->
     <div v-if="!data || data.length === 0" class="text-center py-12">
-      <p class="text-text text-lg">
+      <p class="text-text text-lg font-medium">
         {{ loading ? 'Loading...' : 'No data available' }}
       </p>
     </div>

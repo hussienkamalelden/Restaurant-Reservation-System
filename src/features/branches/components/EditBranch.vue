@@ -51,7 +51,7 @@
 
 <script setup>
 import CustomDialog from '@/components/CustomDialog.vue';
-import { ref } from 'vue';
+import { computed } from 'vue';
 
 const props = defineProps({
   isVisible: {
@@ -60,13 +60,13 @@ const props = defineProps({
   },
   branchData: {
     type: Object,
-    default: () => null,
+    default: {},
   },
 });
 
-const reservationDuration = ref(props?.branchData?.reservation_duration || 0);
-
-console.log(props.branchData);
+const reservationDuration = computed(
+  () => props?.branchData?.reservation_duration || 0
+);
 
 const emit = defineEmits(['close']);
 
