@@ -103,7 +103,7 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue';
+import { ref, computed, watch } from 'vue';
 import { useBranchStore } from '../../store/useBranchStore';
 import { storeToRefs } from 'pinia';
 const branchStore = useBranchStore();
@@ -127,6 +127,23 @@ const slots = ref([]);
 
 // Generate unique ID for each slot
 let nextId = Date.now();
+
+// Sync slots with store based on current day
+const syncSlotsFromStore = () => {
+  const daySlots = selectedSlots.value.filter(
+    (slot) => slot.day === props.title
+  );
+  slots.value = daySlots.map((slot) => ({
+    id: slot.id,
+    fromHour: slot.from.split(':')[0],
+    fromMinute: slot.from.split(':')[1],
+    toHour: slot.to.split(':')[0],
+    toMinute: slot.to.split(':')[1],
+  }));
+};
+
+// Watch for changes in selectedSlots and sync
+watch(selectedSlots, syncSlotsFromStore, { deep: true, immediate: true });
 
 // Add new slot
 const addSlot = () => {
