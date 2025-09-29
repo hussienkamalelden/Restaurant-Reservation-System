@@ -30,11 +30,11 @@ import { ref } from 'vue';
 import { useBranchBatchProcessor } from '../composables/useBranchBatchProcessor';
 import { storeToRefs } from 'pinia';
 const branchStore = useBranchStore();
-const { updateBranchesStatus, getBranches } = branchStore;
+const { updateBranchesInfo, getBranches } = branchStore;
 const { activeBranches } = storeToRefs(branchStore);
 // Initialize the batch processor composable - arguments:(function, data, batch size)
 const { processBranchesInBatches } = useBranchBatchProcessor(
-  updateBranchesStatus,
+  updateBranchesInfo,
   { accepts_reservations: false },
   3
 );

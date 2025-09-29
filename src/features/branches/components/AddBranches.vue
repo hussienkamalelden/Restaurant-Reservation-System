@@ -75,11 +75,11 @@ import { ref } from 'vue';
 import Tag from '@/components/Tag.vue';
 import Toast from '@/components/Toast.vue';
 const branchStore = useBranchStore();
-const { updateBranchesStatus, getBranches } = branchStore;
+const { updateBranchesInfo, getBranches } = branchStore;
 const { selectedBranches, disabledBranches } = storeToRefs(branchStore);
 // Initialize the batch processor composable - arguments:(function, data, batch size)
 const { processBranchesInBatches } = useBranchBatchProcessor(
-  updateBranchesStatus,
+  updateBranchesInfo,
   { accepts_reservations: true },
   3
 );

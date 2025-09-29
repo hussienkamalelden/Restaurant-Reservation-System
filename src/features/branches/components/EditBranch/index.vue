@@ -7,16 +7,24 @@
   >
     <!-- Working Hours -->
     <div class="mb-6 px-4 py-2 bg-primary/10 rounded-lg border border-primary">
-      <div class="flex items-center gap-3">
+      <div class="flex items-center justify-between gap-3">
         <div>
           <h3 class="text-lg font-semibold text-text">Working Hours</h3>
           <p class="text-sm text-text">
-            Branch working hours are
+            Branch working hours are<br />
             <span class="font-mono font-medium text-primary">
               {{ branchData?.opening_from }} - {{ branchData?.opening_to }}
             </span>
           </p>
         </div>
+        <!-- Disable Branch Button -->
+        <button
+          type="button"
+          @click="handleDisableBranch"
+          class="px-4 py-2 bg-red-600 cursor-pointer text-white font-medium rounded-md shadow-sm whitespace-nowrap"
+        >
+          Disable Branch
+        </button>
       </div>
     </div>
 
@@ -149,7 +157,7 @@ import { useBranchStore } from '../../store/useBranchStore';
 import { useSlots } from '../../composables/useSlots.js';
 const branchStore = useBranchStore();
 const { selectedSlots } = storeToRefs(branchStore);
-const { updateBranchInfo } = branchStore;
+const { updateBranchesInfo, getBranches } = branchStore;
 const { apply, validateSlots } = useSlots();
 
 const props = defineProps({
@@ -245,11 +253,21 @@ const handleSave = handleSubmit(async (formValues) => {
   if (errors.value.length > 0) {
     return;
   }
-  await updateBranchInfo(props.branchData?.id, {
+  await updateBranchesInfo(props.branchData?.id, {
     reservation_duration: formValues.reservationDuration,
   });
+  await getBranches();
   closeDialog();
 });
+
+// Handle disable branch
+const handleDisableBranch = async () => {
+  await updateBranchesInfo(props.branchData?.id, {
+    accepts_reservations: false,
+  });
+  await getBranches();
+  closeDialog();
+};
 
 // Close dialog
 const closeDialog = () => {

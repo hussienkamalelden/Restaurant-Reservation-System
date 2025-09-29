@@ -1,5 +1,5 @@
 export const useBranchBatchProcessor = (
-  updateBranchesStatusFunction,
+  updateBranchesInfoFunction,
   data,
   batchSize = 3
 ) => {
@@ -16,7 +16,7 @@ export const useBranchBatchProcessor = (
 
       // Create promises for the current batch
       const batchPromises = currentBatch.map((branch) =>
-        updateBranchesStatusFunction(branch.id, data)
+        updateBranchesInfoFunction(branch.id, data)
       );
 
       // Execute the batch, and count the successes and failures
