@@ -160,10 +160,6 @@ const schema = yup.object({
 // Form setup with VeeValidate
 const { setFieldValue, values, handleSubmit, validate } = useForm({
   validationSchema: schema,
-  initialValues: {
-    reservationDuration: props?.branchData?.reservation_duration || null,
-    tables: [],
-  },
 });
 
 // Add table to selected tables
@@ -205,4 +201,15 @@ const closeDialog = () => {
   selectedTables.value = [];
   emit('close');
 };
+
+// Watch for prop changes to update form values
+watch(
+  () => props.branchData,
+  (newBranchData) => {
+    if (newBranchData?.reservation_duration) {
+      setFieldValue('reservationDuration', newBranchData.reservation_duration);
+    }
+  },
+  { deep: true, immediate: true }
+);
 </script>
