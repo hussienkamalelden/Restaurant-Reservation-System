@@ -133,10 +133,10 @@ import Tag from '@/components/Tag.vue';
 import SlotsBox from './SlotsBox.vue';
 import { storeToRefs } from 'pinia';
 import { useBranchStore } from '../../store/useBranchStore';
-import { useApplyOnAllDays } from '../../composables/useApplyOnAllDays.js';
+import { useSlots } from '../../composables/useSlots.js';
 const branchStore = useBranchStore();
 const { selectedSlots } = storeToRefs(branchStore);
-const { apply } = useApplyOnAllDays();
+const { apply } = useSlots();
 
 const props = defineProps({
   isVisible: {

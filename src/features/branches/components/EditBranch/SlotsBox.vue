@@ -106,10 +106,10 @@
 import { ref, computed, watch } from 'vue';
 import { useBranchStore } from '../../store/useBranchStore';
 import { storeToRefs } from 'pinia';
+import { useSlots } from '../../composables/useSlots.js';
 const branchStore = useBranchStore();
 const { selectedSlots } = storeToRefs(branchStore);
-
-const emit = defineEmits(['applyOnAllDays']);
+const { formatHour, formatMinute } = useSlots();
 
 const props = defineProps({
   title: {
@@ -122,9 +122,8 @@ const props = defineProps({
   },
 });
 
-// Reactive data
 const slots = ref([]);
-
+const emit = defineEmits(['applyOnAllDays']);
 // Generate unique ID for each slot
 let nextId = Date.now();
 
@@ -142,9 +141,6 @@ const syncSlotsFromStore = () => {
   }));
 };
 
-// Watch for changes in selectedSlots and sync
-watch(selectedSlots, syncSlotsFromStore, { deep: true, immediate: true });
-
 // Add new slot
 const addSlot = () => {
   if (slots.value.length < 3) {
@@ -158,29 +154,13 @@ const addSlot = () => {
   }
 };
 
-// Format hour input to ensure 2-digit format
-const formatHour = (slot, field) => {
-  let value = parseInt(slot[field]) || 0;
-  if (value > 23) value = 23;
-  if (value < 0) value = 0;
-  slot[field] = String(value).padStart(2, '0');
-};
-
-// Format minute input to ensure 2-digit format
-const formatMinute = (slot, field) => {
-  let value = parseInt(slot[field]) || 0;
-  if (value > 59) value = 59;
-  if (value < 0) value = 0;
-  slot[field] = String(value).padStart(2, '0');
-};
-
 // Delete slot
 const deleteSlot = (index) => {
   slots.value.splice(index, 1);
   updateSlot();
 };
 
-// Convert slots to proper time format for parent component
+// Convert slots to proper time format
 const formattedSlots = computed(() => {
   return slots.value.map((slot) => ({
     day: props.title,
@@ -220,4 +200,7 @@ const updateSlot = () => {
   selectedSlots.value = filteredSlots;
   console.log(selectedSlots.value);
 };
+
+// Watch for changes in selectedSlots and sync
+watch(selectedSlots, syncSlotsFromStore, { deep: true, immediate: true });
 </script>
