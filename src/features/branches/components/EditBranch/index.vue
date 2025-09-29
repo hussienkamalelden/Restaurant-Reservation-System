@@ -246,11 +246,6 @@ const applyOnAllDays = () => {
     return;
   }
 
-  // Remove all existing slots from other days (keep only Saturday slots)
-  const filteredSlots = selectedSlots.value.filter(
-    (slot) => slot.day === 'Saturday'
-  );
-
   // Create new slots for each day based on Saturday's slots
   const allDaysSlots = [];
 
