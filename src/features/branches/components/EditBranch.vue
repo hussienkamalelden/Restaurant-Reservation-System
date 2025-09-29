@@ -5,7 +5,7 @@
     @close="closeDialog"
     @save="handleSave"
   >
-    <!-- Working Hours Title -->
+    <!-- Working Hours -->
     <div class="mb-6 px-4 py-2 bg-primary/10 rounded-lg border border-primary">
       <div class="flex items-center gap-3">
         <div>
@@ -20,6 +20,7 @@
       </div>
     </div>
 
+    <!-- Reservation Form  -->
     <Form
       :validation-schema="schema"
       :initial-values="{
