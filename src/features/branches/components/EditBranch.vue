@@ -63,35 +63,41 @@
             </label>
           </div>
 
-          <select
-            id="tables-select"
-            ref="tableSelect"
-            class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary"
-            @change="
-              addTable(
-                $event.target.value,
-                $event.target.options[$event.target.selectedIndex].text
-              )
-            "
-          >
-            <option disabled selected value="">
-              {{
-                !availableTables || availableTables.length === 0
-                  ? 'No available tables'
-                  : 'Select tables...'
-              }}
-            </option>
-            <option
-              v-for="table in availableTables"
-              :key="table.id"
-              :value="table.id"
-              :disabled="
-                selectedTables.some((selected) => selected.id === table.id)
+          <Field name="tables" v-slot="{ errorMessage }">
+            <select
+              id="tables-select"
+              ref="tableSelect"
+              :class="[
+                'w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary',
+                errorMessage ? 'border-red-500' : 'border-gray-300',
+              ]"
+              @change="
+                addTable(
+                  $event.target.value,
+                  $event.target.options[$event.target.selectedIndex].text
+                )
               "
             >
-              {{ table.section }} - {{ table.name }}
-            </option>
-          </select>
+              <option disabled selected value="">
+                {{
+                  !availableTables || availableTables.length === 0
+                    ? 'No available tables'
+                    : 'Select tables...'
+                }}
+              </option>
+              <option
+                v-for="table in availableTables"
+                :key="table.id"
+                :value="table.id"
+                :disabled="
+                  selectedTables.some((selected) => selected.id === table.id)
+                "
+              >
+                {{ table.section }} - {{ table.name }}
+              </option>
+            </select>
+          </Field>
+          <ErrorMessage name="tables" class="mt-1 text-sm text-red-600" />
 
           <!-- Selected Branches -->
           <div class="flex flex-wrap gap-2 mt-2">
@@ -168,6 +174,7 @@ const addTable = (tableId, tableName) => {
       id: tableId,
       name: tableName,
     });
+    setFieldValue('tables', selectedTables.value);
   }
   // Reset the select element back to the default option
   if (tableSelect.value) {
@@ -178,6 +185,7 @@ const addTable = (tableId, tableName) => {
 // Remove table from selected tables
 const removeTable = (id) => {
   selectedTables.value = selectedTables.value.filter((t) => t.id !== id);
+  setFieldValue('tables', [...selectedTables.value]);
 };
 
 // Handle save
@@ -185,7 +193,7 @@ const handleSave = handleSubmit(async (formValues) => {
   const data = {
     id: props.branchData?.id,
     reservationDuration: formValues.reservationDuration,
-    tables: selectedTables.value,
+    tables: formValues.tables,
   };
   // Here you would typically emit the save event or call an API
   console.log('Form data:', data);
