@@ -111,7 +111,18 @@
           </div>
         </div>
 
-        <!-- Slots Box -->
+        <!-- Slots -->
+        <!-- Errors -->
+        <ul v-if="errors.length > 0" class="flex flex-col gap-2">
+          <li
+            class="text-red-600 text-sm list-disc list-inside"
+            v-for="error in errors"
+            :key="error"
+          >
+            {{ error }}
+          </li>
+        </ul>
+        <!-- Box -->
         <SlotsBox
           v-for="day in weekDays"
           :key="day"
@@ -136,7 +147,7 @@ import { useBranchStore } from '../../store/useBranchStore';
 import { useSlots } from '../../composables/useSlots.js';
 const branchStore = useBranchStore();
 const { selectedSlots } = storeToRefs(branchStore);
-const { apply } = useSlots();
+const { apply, validateSlots } = useSlots();
 
 const props = defineProps({
   isVisible: {
@@ -152,6 +163,7 @@ const props = defineProps({
 const emit = defineEmits(['close']);
 const selectedTables = ref([]);
 const tableSelect = ref(null);
+const errors = ref([]);
 
 // Week days
 const weekDays = ref([
@@ -224,8 +236,10 @@ const handleSave = handleSubmit(async (formValues) => {
     reservationDuration: formValues.reservationDuration,
     tables: formValues.tables,
   };
-  // Here you would typically emit the save event or call an API
-  console.log('Form data:', data);
+  errors.value = validateSlots('11:00', '23:00', 'Saturday');
+  if (errors.value.length > 0) {
+    return;
+  }
   closeDialog();
 });
 
@@ -237,8 +251,13 @@ const closeDialog = () => {
 };
 
 // Apply on all days
-const applyOnAllDays = () => {
-  apply(weekDays.value);
+const applyOnAllDays = async () => {
+  try {
+    await apply(weekDays.value);
+    errors.value = [];
+  } catch (error) {
+    errors.value = [error.message];
+  }
 };
 
 // Watch for prop changes to update form values
