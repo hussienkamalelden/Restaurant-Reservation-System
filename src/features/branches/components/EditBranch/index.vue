@@ -133,8 +133,10 @@ import Tag from '@/components/Tag.vue';
 import SlotsBox from './SlotsBox.vue';
 import { storeToRefs } from 'pinia';
 import { useBranchStore } from '../../store/useBranchStore';
+import { useApplyOnAllDays } from '../../composables/useApplyOnAllDays.js';
 const branchStore = useBranchStore();
 const { selectedSlots } = storeToRefs(branchStore);
+const { apply } = useApplyOnAllDays();
 
 const props = defineProps({
   isVisible: {
@@ -236,33 +238,7 @@ const closeDialog = () => {
 
 // Apply on all days
 const applyOnAllDays = () => {
-  // Get Saturday's slots
-  const saturdaySlots = selectedSlots.value.filter(
-    (slot) => slot.day === 'Saturday'
-  );
-
-  if (saturdaySlots.length === 0) {
-    console.log('No Saturday slots to copy');
-    return;
-  }
-
-  // Create new slots for each day based on Saturday's slots
-  const allDaysSlots = [];
-
-  weekDays.value.forEach((day) => {
-    saturdaySlots.forEach((saturdaySlot) => {
-      // Generate unique ID for each new slot
-      const newSlot = {
-        ...saturdaySlot,
-        day: day,
-        id: day === 'Saturday' ? saturdaySlot.id : Date.now() + Math.random(), // Keep original ID for Saturday, generate new for others
-      };
-      allDaysSlots.push(newSlot);
-    });
-  });
-
-  selectedSlots.value = allDaysSlots;
-  console.log('Applied Saturday slots to all days:', selectedSlots.value);
+  apply(weekDays.value);
 };
 
 // Watch for prop changes to update form values
