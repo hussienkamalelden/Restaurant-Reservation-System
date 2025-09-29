@@ -63,9 +63,8 @@
             </label>
           </div>
 
-          <Field name="tables" v-slot="{ field, errorMessage }">
+          <Field name="tables" v-slot="{ errorMessage }">
             <select
-              v-bind="field"
               id="tables-select"
               ref="tableSelect"
               :class="[
@@ -171,6 +170,7 @@ const addTable = (tableId, tableName) => {
       id: tableId,
       name: tableName,
     });
+    setFieldValue('tables', selectedTables.value);
   }
   // Reset the select element back to the default option
   if (tableSelect.value) {
@@ -183,6 +183,7 @@ const removeTable = (tableId) => {
   const index = selectedTables.value.findIndex((table) => table.id === tableId);
   if (index !== -1) {
     selectedTables.value.splice(index, 1);
+    setFieldValue('tables', selectedTables.value);
   }
 };
 
