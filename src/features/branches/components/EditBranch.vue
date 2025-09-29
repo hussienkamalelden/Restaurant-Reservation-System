@@ -87,7 +87,7 @@
                   selectedTables.some((selected) => selected.id === table.id)
                 "
               >
-                {{ table.name }}
+                {{ table.section }} - {{ table.name }}
               </option>
             </select>
           </Field>
@@ -112,7 +112,7 @@
 <script setup>
 import CustomDialog from '@/components/CustomDialog.vue';
 import { Form, Field, ErrorMessage, useForm } from 'vee-validate';
-import { ref, watch } from 'vue';
+import { ref, watch, computed } from 'vue';
 import * as yup from 'yup';
 import Tag from '@/components/Tag.vue';
 
@@ -131,13 +131,15 @@ const emit = defineEmits(['close']);
 const selectedTables = ref([]);
 const tableSelect = ref(null);
 
-// Dummy table data with section-table format
-const availableTables = ref([
-  { id: 'A-1', name: 'Section A - Table 1', section: 'A', table: '1' },
-  { id: 'A-2', name: 'Section A - Table 2', section: 'A', table: '2' },
-  { id: 'A-3', name: 'Section A - Table 3', section: 'A', table: '3' },
-  { id: 'B-1', name: 'Section B - Table 1', section: 'B', table: '1' },
-]);
+const availableTables = computed(() => {
+  return props.branchData?.sections.flatMap((section) =>
+    section.tables.map((table) => ({
+      id: table.id,
+      name: table.name,
+      section: section.name,
+    }))
+  );
+});
 
 // Schema
 const schema = yup.object({
