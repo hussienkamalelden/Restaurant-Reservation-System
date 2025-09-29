@@ -2,11 +2,11 @@
 
 Vue.js application for managing restaurant branch reservations, built with Vue 3 Composition API, Pinia state management, and Tailwind CSS.
 
-## 📊 System Architecture & Flow & Live Demo
+### [Live demo](https://foodics-task.vercel.app)
+
+## 📊 System Flow
 
 ![Restaurant Reservation System Flowchart](https://www.mediafire.com/view/8e247are3c3hqxr/Restaurant_Reservation_System_Flowchart.png/file)
-
-[Restaurant Reservation System Flowchart](https://foodics-task.vercel.app/login)
 
 ## 🏗️ Project Structure
 
