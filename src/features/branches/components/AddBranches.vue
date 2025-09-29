@@ -138,11 +138,8 @@ const addBranch = (id, name) => {
   branchSelect.value.value = '0';
 };
 
+// Check if the id is in selectedBranch array and remove it
 const handleRemove = (id) => {
-  // Check if the id is in selectedBranch array and remove it
-  const index = selectedBranches.value.findIndex((branch) => branch.id === id);
-  if (index !== -1) {
-    selectedBranches.value.splice(index, 1);
-  }
+  selectedBranches.value = selectedBranches.value.filter((t) => t.id !== id);
 };
 </script>

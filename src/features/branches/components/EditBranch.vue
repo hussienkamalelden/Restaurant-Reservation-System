@@ -59,7 +59,7 @@
               for="tables-select"
               class="block text-sm font-medium text-text mb-1"
             >
-              Select Tables
+              Tables
             </label>
           </div>
 
@@ -78,7 +78,7 @@
                 )
               "
             >
-              <option disabled selected value="">Choose a table...</option>
+              <option disabled selected value="">Select tables...</option>
               <option
                 v-for="table in availableTables"
                 :key="table.id"
@@ -179,14 +179,12 @@ const addTable = (tableId, tableName) => {
 };
 
 // Remove table from selected tables
-const removeTable = (tableId) => {
-  const index = selectedTables.value.findIndex((table) => table.id === tableId);
-  if (index !== -1) {
-    selectedTables.value.splice(index, 1);
-    setFieldValue('tables', selectedTables.value);
-  }
+const removeTable = (id) => {
+  selectedTables.value = selectedTables.value.filter((t) => t.id !== id);
+  setFieldValue('tables', [...selectedTables.value]);
 };
 
+// Handle save
 const handleSave = handleSubmit(async (formValues) => {
   const data = {
     id: props.branchData?.id,
@@ -198,6 +196,7 @@ const handleSave = handleSubmit(async (formValues) => {
   closeDialog();
 });
 
+// Close dialog
 const closeDialog = () => {
   selectedTables.value = [];
   emit('close');
