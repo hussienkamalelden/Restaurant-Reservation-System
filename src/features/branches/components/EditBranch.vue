@@ -5,6 +5,21 @@
     @close="closeDialog"
     @save="handleSave"
   >
+    <!-- Working Hours Title -->
+    <div class="mb-6 px-4 py-2 bg-primary/10 rounded-lg border border-primary">
+      <div class="flex items-center gap-3">
+        <div>
+          <h3 class="text-lg font-semibold text-text">Working Hours</h3>
+          <p class="text-sm text-text">
+            Branch working hours are
+            <span class="font-mono font-medium text-primary">
+              {{ branchData?.opening_from }} - {{ branchData?.opening_to }}
+            </span>
+          </p>
+        </div>
+      </div>
+    </div>
+
     <Form
       :validation-schema="schema"
       :initial-values="{
@@ -96,6 +111,27 @@ const schema = yup.object({
     .max(480, 'Maximum duration is 8 hours')
     .positive('Duration must be positive'),
 });
+
+const formatTime = (time) => {
+  if (!time) return '00:00';
+
+  // If time is already in HH:MM format, return as is
+  if (typeof time === 'string' && time.includes(':')) {
+    return time;
+  }
+
+  // If time is in other format, try to parse and format
+  try {
+    const date = new Date(`1970-01-01T${time}`);
+    return date.toLocaleTimeString('en-US', {
+      hour12: false,
+      hour: '2-digit',
+      minute: '2-digit',
+    });
+  } catch {
+    return '00:00';
+  }
+};
 
 const handleSave = (values) => {
   const data = {
