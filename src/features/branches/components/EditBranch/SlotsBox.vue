@@ -196,9 +196,7 @@ const updateSlot = () => {
     // Keep slots from other days, or slots from current day that still exist
     return slot.day !== props.title || currentDaySlotIds.includes(slot.id);
   });
-
   selectedSlots.value = filteredSlots;
-  console.log(selectedSlots.value);
 };
 
 // Watch for changes in selectedSlots and sync
