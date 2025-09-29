@@ -113,15 +113,15 @@
 
         <!-- Slots -->
         <!-- Errors -->
-        <ul v-if="errors.length > 0" class="flex flex-col gap-2">
-          <li
-            class="text-red-600 text-sm list-disc list-inside"
+        <div v-if="errors.length > 0" class="flex flex-col gap-2">
+          <span
+            class="text-red-600 text-sm capitalize"
             v-for="error in errors"
             :key="error"
           >
-            {{ error }}
-          </li>
-        </ul>
+            - {{ error }}
+          </span>
+        </div>
         <!-- Box -->
         <SlotsBox
           v-for="day in weekDays"
@@ -226,7 +226,18 @@ const handleSave = handleSubmit(async (formValues) => {
     reservationDuration: formValues.reservationDuration,
     tables: formValues.tables,
   };
-  errors.value = validateSlots('11:00', '23:00', 'Saturday');
+
+  // Validate each day individually
+  errors.value = [];
+  weekDays.value.forEach((day) => {
+    const dayErrors = validateSlots(
+      day.name,
+      day.startReservation,
+      day.endReservation
+    );
+    errors.value = [...errors.value, ...dayErrors];
+  });
+
   if (errors.value.length > 0) {
     return;
   }
@@ -246,7 +257,7 @@ const applyOnAllDays = async () => {
     await apply(weekDays.value);
     errors.value = [];
   } catch (error) {
-    errors.value = [error.message];
+    errors.value = [...errors.value, error.message];
   }
 };
 
