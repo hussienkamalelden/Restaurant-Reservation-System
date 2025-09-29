@@ -111,25 +111,27 @@
           </div>
         </div>
 
-        <!-- Slots -->
-        <!-- Errors -->
-        <div v-if="errors.length > 0" class="flex flex-col gap-2">
-          <span
-            class="text-red-600 text-sm capitalize"
-            v-for="error in errors"
-            :key="error"
+        <!-- Slots Box -->
+        <div v-for="day in weekDays" :key="day.name" class="space-y-2">
+          <SlotsBox
+            :title="day.name"
+            :isApplyOnAllDays="day.name === 'saturday'"
+            @applyOnAllDays="applyOnAllDays"
+          />
+          <!-- Day-specific errors -->
+          <div
+            v-if="getDayErrors(day.name).length > 0"
+            class="flex flex-col gap-1 ml-4"
           >
-            - {{ error }}
-          </span>
+            <span
+              class="text-red-600 text-sm capitalize"
+              v-for="error in getDayErrors(day.name)"
+              :key="error"
+            >
+              - {{ error }}
+            </span>
+          </div>
         </div>
-        <!-- Box -->
-        <SlotsBox
-          v-for="day in weekDays"
-          :key="day.name"
-          :title="day.name"
-          :isApplyOnAllDays="day.name === 'saturday'"
-          @applyOnAllDays="applyOnAllDays"
-        />
       </div>
     </div>
   </CustomDialog>
@@ -176,6 +178,13 @@ const availableTables = computed(() => {
     }))
   );
 });
+
+// Get errors for a specific day
+const getDayErrors = (dayName) => {
+  return errors.value.filter((error) =>
+    error.toLowerCase().includes(dayName.toLowerCase())
+  );
+};
 
 // Schema
 const schema = yup.object({
