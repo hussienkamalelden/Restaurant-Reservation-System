@@ -51,8 +51,13 @@ onMounted(async () => {
 
 // Handle row click from table
 const handleRowClick = (branch) => {
-  selectedBranch.value = branch;
-  showEditDialog.value = true;
+  if (branch.accepts_reservations === 'Yes') {
+    selectedBranch.value = branch;
+    showEditDialog.value = true;
+  } else {
+    error.value =
+      'This branch does not accept reservations, please activate it first';
+  }
 };
 
 // Close edit dialog
