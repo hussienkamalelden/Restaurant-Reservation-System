@@ -89,8 +89,8 @@ const handleSave = handleSubmit(async (formValues) => {
   weekDays.value.forEach((day) => {
     const dayErrors = validateSlots(
       day.name,
-      day.startReservation,
-      day.endReservation
+      props.branchData.opening_from,
+      props.branchData.opening_to
     );
     errors.value = [...errors.value, ...dayErrors];
   });
@@ -148,11 +148,9 @@ watch(
     if (newBranchData?.reservation_times) {
       weekDays.value = Object.entries(newBranchData?.reservation_times).map(
         ([day, times]) => {
-          const [start, end] = times?.[0] || [null, null];
           return {
             name: day,
-            startReservation: start,
-            endReservation: end,
+            times,
           };
         }
       );
