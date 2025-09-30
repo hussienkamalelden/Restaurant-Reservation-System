@@ -87,7 +87,7 @@ const schema = yup.object({
 });
 
 // Form setup with VeeValidate
-const { setFieldValue, values, handleSubmit, validate } = useForm({
+const { setFieldValue, handleSubmit } = useForm({
   validationSchema: schema,
 });
 
@@ -118,27 +118,27 @@ const handleSave = handleSubmit(async (formValues) => {
   });
 
   // Send Data to API
-  try {
-    await updateBranchesInfo(props.branchData?.id, {
-      reservation_duration: formValues.reservationDuration,
-      reservation_times: reservationTimes,
-    });
+  const response = await updateBranchesInfo(props.branchData?.id, {
+    reservation_duration: formValues.reservationDuration,
+    reservation_times: reservationTimes,
+  });
+  if (response?.status === 200) {
     await getBranches();
     toastVisible.value = true;
-  } catch (error) {}
-  closeDialog();
+    closeDialog();
+  }
 });
 
 // Handle disable branch
 const handleDisableBranch = async () => {
-  try {
-    await updateBranchesInfo(props.branchData?.id, {
-      accepts_reservations: false,
-    });
+  const response = await updateBranchesInfo(props.branchData?.id, {
+    accepts_reservations: false,
+  });
+  if (response?.status === 200) {
     await getBranches();
     toastVisible.value = true;
-  } catch (error) {}
-  closeDialog();
+    closeDialog();
+  }
 };
 
 // Close dialog
