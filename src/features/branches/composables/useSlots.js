@@ -102,7 +102,7 @@ export const useSlots = () => {
         errors.push(
           `${dayName} slot ${
             index + 1
-          }: Cannot schedule between 17:00-18:00 (service switch time)`
+          }: Reservation not available during service switch time (17:00-18:00)`
         );
       }
 

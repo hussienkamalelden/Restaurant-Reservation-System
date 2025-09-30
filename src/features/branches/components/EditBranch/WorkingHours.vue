@@ -26,7 +26,7 @@
 const props = defineProps({
   branchData: {
     type: Object,
-    default: {},
+    default: () => ({}),
   },
 });
 
