@@ -58,15 +58,18 @@ export const useSlots = () => {
   };
 
   // Validate all selected slots
-  const validateSlots = (dayName, minTime, maxTime) => {
+  const validateSlots = (
+    dayName,
+    minTime,
+    maxTime,
+    reservationDuration = 0
+  ) => {
     if (!minTime || !maxTime) {
       return [];
     }
     const errors = [];
     const minMinutes = timeToMinutes(minTime);
     const maxMinutes = timeToMinutes(maxTime);
-    const serviceSwitchStart = timeToMinutes('17:00');
-    const serviceSwitchEnd = timeToMinutes('18:00');
 
     // Filter slots for the specific day
     const daySlots = selectedSlots.value.filter((slot) => slot.day === dayName);
@@ -93,16 +96,13 @@ export const useSlots = () => {
         );
       }
 
-      // Validate slot doesn't conflict with service switch (17:00-18:00)
-      if (
-        (fromMinutes >= serviceSwitchStart && fromMinutes < serviceSwitchEnd) ||
-        (toMinutes > serviceSwitchStart && toMinutes <= serviceSwitchEnd) ||
-        (fromMinutes < serviceSwitchStart && toMinutes > serviceSwitchEnd)
-      ) {
+      // Validate slot duration is not less than reservation duration
+      const slotDuration = toMinutes - fromMinutes;
+      if (slotDuration < reservationDuration) {
         errors.push(
           `${dayName} slot ${
             index + 1
-          }: Cannot schedule between 17:00-18:00 (service switch time)`
+          }: Slot duration (${slotDuration} minutes) cannot be less than reservation duration (${reservationDuration} minutes)`
         );
       }
 
