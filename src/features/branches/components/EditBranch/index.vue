@@ -6,27 +6,10 @@
     @save="handleSave"
   >
     <!-- Working Hours -->
-    <div class="mb-6 px-4 py-2 bg-primary/10 rounded-lg border border-primary">
-      <div class="flex items-center justify-between gap-3">
-        <div>
-          <h3 class="text-lg font-semibold text-text">Working Hours</h3>
-          <p class="text-sm text-text">
-            Branch working hours are<br />
-            <span class="font-mono font-medium text-primary">
-              {{ branchData?.opening_from }} - {{ branchData?.opening_to }}
-            </span>
-          </p>
-        </div>
-        <!-- Disable Branch Button -->
-        <button
-          type="button"
-          @click="handleDisableBranch"
-          class="px-4 py-2 bg-red-600 cursor-pointer text-white font-medium rounded-md shadow-sm whitespace-nowrap"
-        >
-          Disable Branch
-        </button>
-      </div>
-    </div>
+    <WorkingHours
+      :branch-data="branchData"
+      @disable-branch="handleDisableBranch"
+    />
 
     <!-- Reservation Form  -->
     <div>
@@ -159,6 +142,7 @@ import { ref, watch, computed } from 'vue';
 import * as yup from 'yup';
 import Tag from '@/components/Tag.vue';
 import SlotsBox from './SlotsBox.vue';
+import WorkingHours from './WorkingHours.vue';
 import { storeToRefs } from 'pinia';
 import { useBranchStore } from '../../store/useBranchStore';
 import { useSlots } from '../../composables/useSlots.js';
