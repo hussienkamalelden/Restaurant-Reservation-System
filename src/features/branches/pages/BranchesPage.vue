@@ -34,7 +34,7 @@ import Loading from '@/components/Loading.vue';
 import Table from '../components/Table.vue';
 import Header from '../components/Header.vue';
 import EditBranch from '../components/EditBranch/index.vue';
-import { minutesToHours } from '@/utils/time';
+import { minutesToHours } from '@/utils/timeFormatter';
 import Toast from '@/components/Toast.vue';
 
 const branchStore = useBranchStore();
