@@ -65,8 +65,6 @@ export const useSlots = () => {
     const errors = [];
     const minMinutes = timeToMinutes(minTime);
     const maxMinutes = timeToMinutes(maxTime);
-    const serviceSwitchStart = timeToMinutes('17:00');
-    const serviceSwitchEnd = timeToMinutes('18:00');
 
     // Filter slots for the specific day
     const daySlots = selectedSlots.value.filter((slot) => slot.day === dayName);
@@ -90,19 +88,6 @@ export const useSlots = () => {
           `${dayName} slot ${
             index + 1
           }: Time must be between ${minTime} and ${maxTime}`
-        );
-      }
-
-      // Validate slot doesn't conflict with service switch (17:00-18:00)
-      if (
-        (fromMinutes >= serviceSwitchStart && fromMinutes < serviceSwitchEnd) ||
-        (toMinutes > serviceSwitchStart && toMinutes <= serviceSwitchEnd) ||
-        (fromMinutes < serviceSwitchStart && toMinutes > serviceSwitchEnd)
-      ) {
-        errors.push(
-          `${dayName} slot ${
-            index + 1
-          }: Reservation not available during service switch time (17:00-18:00)`
         );
       }
 

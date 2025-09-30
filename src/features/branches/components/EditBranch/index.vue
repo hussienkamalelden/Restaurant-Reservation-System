@@ -62,6 +62,15 @@ const selectedTables = ref([]);
 const errors = ref([]);
 const weekDays = ref([]);
 const toastVisible = ref(false);
+const dayOrder = [
+  'saturday',
+  'sunday',
+  'monday',
+  'tuesday',
+  'wednesday',
+  'thursday',
+  'friday',
+];
 
 // Schema
 const schema = yup.object({
@@ -146,14 +155,12 @@ watch(
       setFieldValue('reservationDuration', newBranchData.reservation_duration);
     }
     if (newBranchData?.reservation_times) {
-      weekDays.value = Object.entries(newBranchData?.reservation_times).map(
-        ([day, times]) => {
-          return {
-            name: day,
-            times,
-          };
-        }
-      );
+      weekDays.value = dayOrder
+        .filter((day) => newBranchData.reservation_times[day]) // Only include days that exist in the data
+        .map((day) => ({
+          name: day,
+          times: newBranchData.reservation_times[day],
+        }));
     }
   },
   { deep: true, immediate: true }
