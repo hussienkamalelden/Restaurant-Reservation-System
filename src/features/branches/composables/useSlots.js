@@ -58,7 +58,12 @@ export const useSlots = () => {
   };
 
   // Validate all selected slots
-  const validateSlots = (dayName, minTime, maxTime) => {
+  const validateSlots = (
+    dayName,
+    minTime,
+    maxTime,
+    reservationDuration = 0
+  ) => {
     if (!minTime || !maxTime) {
       return [];
     }
@@ -88,6 +93,16 @@ export const useSlots = () => {
           `${dayName} slot ${
             index + 1
           }: Time must be between ${minTime} and ${maxTime}`
+        );
+      }
+
+      // Validate slot duration is not less than reservation duration
+      const slotDuration = toMinutes - fromMinutes;
+      if (slotDuration < reservationDuration) {
+        errors.push(
+          `${dayName} slot ${
+            index + 1
+          }: Slot duration (${slotDuration} minutes) cannot be less than reservation duration (${reservationDuration} minutes)`
         );
       }
 

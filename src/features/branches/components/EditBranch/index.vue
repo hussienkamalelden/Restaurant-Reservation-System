@@ -99,7 +99,8 @@ const handleSave = handleSubmit(async (formValues) => {
     const dayErrors = validateSlots(
       day.name,
       props.branchData.opening_from,
-      props.branchData.opening_to
+      props.branchData.opening_to,
+      formValues.reservationDuration
     );
     errors.value = [...errors.value, ...dayErrors];
   });
