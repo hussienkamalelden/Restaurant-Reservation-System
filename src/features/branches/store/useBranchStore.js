@@ -28,7 +28,7 @@ export const useBranchStore = defineStore('branches', () => {
         }
       });
     } catch (err) {
-      error.value = error.value?.response.data.message || err;
+      error.value = err.response.data.message || err;
     } finally {
       loading.value = false;
     }
@@ -40,7 +40,7 @@ export const useBranchStore = defineStore('branches', () => {
       const response = await branchesService.updateInfo(id, data);
       return response;
     } catch (err) {
-      error.value = error.value?.response.data.message || err;
+      error.value = err.response.data.message || err;
     } finally {
       loading.value = false;
     }
