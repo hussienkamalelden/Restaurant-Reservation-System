@@ -107,9 +107,21 @@ const handleSave = handleSubmit(async (formValues) => {
   if (errors.value.length > 0) {
     return;
   }
+
+  // Convert selectedSlots to reservation_times format
+  const reservationTimes = {};
+  dayOrder.forEach((day) => {
+    reservationTimes[day] = [];
+  });
+  selectedSlots.value.forEach((slot) => {
+    reservationTimes[slot.day].push([slot.from, slot.to]);
+  });
+
+  // Send Data to API
   try {
     await updateBranchesInfo(props.branchData?.id, {
       reservation_duration: formValues.reservationDuration,
+      reservation_times: reservationTimes,
     });
     await getBranches();
     toastVisible.value = true;
@@ -170,9 +182,7 @@ const createWeekDays = (reservation_times) => {
       });
     });
   });
-
   selectedSlots.value = apiSlots;
-  console.log(selectedSlots.value);
 };
 
 // Watch for prop changes to update form values
