@@ -134,6 +134,7 @@ const closeDialog = () => {
   selectedTables.value = [];
   selectedSlots.value = [];
   errors.value = [];
+  weekDays.value = [];
   emit('close');
 };
 
@@ -147,6 +148,33 @@ const applyOnAllDays = async () => {
   }
 };
 
+// Create weekDays from reservation_times
+const createWeekDays = (reservation_times) => {
+  weekDays.value = dayOrder
+    .filter((day) => reservation_times[day]) // Only include days that exist in the data
+    .map((day) => ({
+      name: day,
+    }));
+
+  // Convert API reservation_times to selectedSlots format
+  const apiSlots = [];
+  let slotId = Date.now();
+
+  Object.entries(reservation_times).forEach(([day, timeRanges]) => {
+    timeRanges.forEach((timeRange) => {
+      apiSlots.push({
+        id: slotId++,
+        day: day,
+        from: timeRange[0],
+        to: timeRange[1],
+      });
+    });
+  });
+
+  selectedSlots.value = apiSlots;
+  console.log(selectedSlots.value);
+};
+
 // Watch for prop changes to update form values
 watch(
   () => props.branchData,
@@ -155,12 +183,7 @@ watch(
       setFieldValue('reservationDuration', newBranchData.reservation_duration);
     }
     if (newBranchData?.reservation_times) {
-      weekDays.value = dayOrder
-        .filter((day) => newBranchData.reservation_times[day]) // Only include days that exist in the data
-        .map((day) => ({
-          name: day,
-          times: newBranchData.reservation_times[day],
-        }));
+      createWeekDays(newBranchData.reservation_times);
     }
   },
   { deep: true, immediate: true }
