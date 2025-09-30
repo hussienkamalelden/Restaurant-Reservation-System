@@ -119,11 +119,20 @@ const handleSave = handleSubmit(async (formValues) => {
   });
 
   // Send Data to API
-  const response = await updateBranchesInfo(props.branchData?.id, {
-    reservation_duration: formValues.reservationDuration,
-    reservation_times: reservationTimes,
-  });
-  if (response?.status === 200) {
+  const response = await updateBranchesInfo(
+    props.branchData?.id,
+    {
+      reservation_duration: formValues.reservationDuration,
+      reservation_times: reservationTimes,
+    },
+    formValues.tables
+  );
+
+  if (
+    (response.length > 0 &&
+      response.every((result) => result.status === 200)) ||
+    response.status === 200
+  ) {
     await getBranches();
     toastVisible.value = true;
     closeDialog();
