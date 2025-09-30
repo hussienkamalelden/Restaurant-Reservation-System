@@ -3,7 +3,7 @@ import axios from 'axios';
 import router from '@/router';
 
 const api = axios.create({
-  baseURL: '/api',
+  baseURL: import.meta.env.PROD ? 'https://api.foodics.dev/v5' : '/api',
   headers: { 'Content-Type': 'application/json' },
 });
 
