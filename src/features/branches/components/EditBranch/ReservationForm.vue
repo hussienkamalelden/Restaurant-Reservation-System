@@ -147,7 +147,7 @@ const emit = defineEmits(['applyOnAllDays']);
 
 const tableSelect = ref(null);
 
-// Available tables - exact same logic as original
+// Available tables
 const availableTables = computed(() => {
   return props.branchData?.sections?.flatMap((section) =>
     section.tables.map((table) => ({
@@ -158,14 +158,14 @@ const availableTables = computed(() => {
   );
 });
 
-// Get errors for a specific day - exact same logic as original
+// Get errors for a specific day
 const getDayErrors = (dayName) => {
   return props.errors.filter((error) =>
     error.toLowerCase().includes(dayName.toLowerCase())
   );
 };
 
-// Add table to selected tables - exact same logic as original
+// Add table to selected tables
 const addTable = (tableId, tableName) => {
   const index = props.selectedTables.findIndex((table) => table.id === tableId);
 
@@ -182,7 +182,7 @@ const addTable = (tableId, tableName) => {
   }
 };
 
-// Remove table from selected tables - exact same logic as original
+// Remove table from selected tables
 const removeTable = (id) => {
   const updatedTables = props.selectedTables.filter((t) => t.id !== id);
   props.selectedTables.splice(0, props.selectedTables.length, ...updatedTables);
