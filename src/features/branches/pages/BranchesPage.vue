@@ -34,7 +34,7 @@ import Loading from '@/components/Loading.vue';
 import Table from '../components/Table.vue';
 import Header from '../components/Header.vue';
 import EditBranch from '../components/EditBranch/index.vue';
-import { minutesToHours } from '@/utils/time';
+import { minutesToHours } from '@/utils/timeFormatter';
 import Toast from '@/components/Toast.vue';
 
 const branchStore = useBranchStore();
@@ -80,6 +80,9 @@ const customData = computed(() => {
   return branches.value?.data?.map((branch) => {
     return {
       ...branch,
+      opening_from:
+        branch.opening_from !== '00:00' ? branch.opening_from : '09:00',
+      opening_to: branch.opening_to !== '00:00' ? branch.opening_to : '23:00',
       number_of_tables: branch.sections.reduce(
         (acc, section) => acc + section.tables.length,
         0
